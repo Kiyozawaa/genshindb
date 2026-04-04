@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS character_ascension_stat (
+CREATE TABLE IF NOT EXISTS character_ascension_stats (
   character_id TEXT NOT NULL,
   stat TEXT NOT NULL,
   value REAL NOT NULL,
