@@ -35,3 +35,19 @@ export async function characterDetails(db, data) {
     $description: description }
   );
 }
+
+
+export async function characterVAs(db, data, characterId) {
+  const stmt = await db.prepare(`
+    INSERT INTO character_vas (character_id, language, va)
+    VALUES ($characterId, $language, $va)`);
+  
+  for (const [lang, va] of Object.entries(data)) {
+    await stmt.run({
+      $characterId: characterId,
+      $language: lang,
+      $va: va
+    });
+  }
+  await stmt.finalize();
+}
