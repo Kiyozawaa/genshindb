@@ -1,6 +1,10 @@
+import fs from 'node:fs/promises';
+import statGrowthTable from './statGrowthTable.json' with { type: 'json' };
+
 export default async function stats(db, data, characterId) {
   //await baseStats(db, data.prop, characterId);
   //await ascensionStats(db, data.promote, characterId);
+  await statGrowth(db);
 }
 
 async function baseStats(db, data, characterId) {
@@ -13,7 +17,8 @@ async function baseStats(db, data, characterId) {
         $stat: prop.propType,
         $value: prop.initValue,
         $growth: prop.type
-      });
+      }
+    );
   }
 }
 
@@ -32,4 +37,26 @@ async function ascensionStats(db, data, characterId) {
       );
     }
   }
+}
+
+async function statGrowth(db) {
+  const SEEDED = '.seeded';
+  try {
+    await fs.access(SEEDED);
+    return;
+  } catch {
+  }
+  
+  for (const [rarity, levels] of Object.entries(statGrowthTable)) {
+    for (const [level, value] of Object.entries(levels)) {
+      await db.run(`
+      INSERT INTO character_stat_growth (rarity, level, value)
+      VALUES ($rarity, $level, $value)`, {
+        $rarity: rarity,
+        $level: level,
+        $value: value
+      });
+    }
+  }
+  await fs.writeFile(SEEDED, '');
 }
