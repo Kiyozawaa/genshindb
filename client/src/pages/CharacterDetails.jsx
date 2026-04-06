@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import { getCharacter } from './../api.js';
+import { calcFinalStats } from './../utils/stats/calc.js';
 
 function CharacterDetails() {
   const { id } = useParams();
@@ -20,7 +21,7 @@ function CharacterDetails() {
   return (
     <>
       <BasicInfo charData={charData}/>
-      <BaseStats data={charData.baseStats}/>
+      <BaseStats data={charData}/>
     </>
   );
 }
@@ -52,12 +53,23 @@ function BasicInfo({charData}) {
 }
 
 function BaseStats({data}) {
+  const [level, setLevel] = useState(1);
+  
+  const finalStats = calcFinalStats(data.baseStats, data.statGrowth, level, data.ascensionStats);
+  
   return (
+    <>
     <div className='base-stats'>
-      <p>HP: {data.hp}</p>
-      <p>Attack: {data.atk}</p>
-      <p>Defense: {data.def}</p>
+      <p>HP: {Math.round(finalStats.hp)}</p>
+      <p>Attack: {Math.round(finalStats.atk)}</p>
+      <p>Defense: {Math.round(finalStats.def)}</p>
     </div>
+    <input type='range'
+    min='1'
+    max='90'
+    value={level}
+    onChange={e => setLevel(e.target.value)}/>
+    </>
   );
 }
 

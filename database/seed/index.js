@@ -15,37 +15,36 @@ export async function seeder() {
   console.log(char.response)
   await seedCharacters(char);
 }
-/*
-export async function seeder() {
-  console.log('Fetching character id list.');
-  const charIdList = await getCharListFromAPI(API);
-  const exists = await characterExists(db);
+
+// export async function seeder() {
+//   console.log('Fetching character id list.');
+//   const charIdList = await getCharListFromAPI(API);
+//   const exists = await characterExists(db);
   
-  console.log(`Fetched ${charIdList.length} characters.`);
-  await db.run('BEGIN TRANSACTION');
-  try {
-    const BATCH_SIZE = 5;
-    for (let i = 0; i < charIdList.length; i+=BATCH_SIZE) {
-      const batch = charIdList.slice(i, i+BATCH_SIZE);
+//   console.log(`Fetched ${charIdList.length} characters.`);
+//   await db.run('BEGIN TRANSACTION');
+//   try {
+//     const BATCH_SIZE = 5;
+//     for (let i = 0; i < charIdList.length; i+=BATCH_SIZE) {
+//       const batch = charIdList.slice(i, i+BATCH_SIZE);
       
-      await Promise.all(
-        batch.map(async (charId) => {
-          if (exists.has(charId)) {
-            console.log(`Skipping ${charId}`);
-            return;
-          }
-          console.log(`Fetching ${charId}`);
-          const character = await fetchWithRetry(`${API}/${charId}`);
-          if (!character) return;
-          await seedCharacters(character);
-        })
-      );
-      await sleep(300);
-    }
-    await db.run('COMMIT');
-  } catch (err) {
-    await db.run('ROLLBACK');
-    console.log(`Seeding failed: ${err}`);
-  }
-}
-*/
+//       await Promise.all(
+//         batch.map(async (charId) => {
+//           if (exists.has(charId)) {
+//             console.log(`Skipping ${charId}`);
+//             return;
+//           }
+//           console.log(`Fetching ${charId}`);
+//           const character = await fetchWithRetry(`${API}/${charId}`);
+//           if (!character) return;
+//           await seedCharacters(character);
+//         })
+//       );
+//       await sleep(300);
+//     }
+//     await db.run('COMMIT');
+//   } catch (err) {
+//     await db.run('ROLLBACK');
+//     console.log(`Seeding failed: ${err}`);
+//   }
+// }

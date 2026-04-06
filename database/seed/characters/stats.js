@@ -2,9 +2,9 @@ import fs from 'node:fs/promises';
 import statGrowthTable from './statGrowthTable.json' with { type: 'json' };
 
 export default async function stats(db, data, characterId) {
-  //await baseStats(db, data.prop, characterId);
-  //await ascensionStats(db, data.promote, characterId);
-  //await statGrowth(db);
+  await baseStats(db, data.prop, characterId);
+  await ascensionStats(db, data.promote, characterId);
+  await statGrowth(db);
 }
 
 async function baseStats(db, data, characterId) {
