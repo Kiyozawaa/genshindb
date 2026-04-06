@@ -5,7 +5,7 @@ import db from './../../db.js';
 
 export async function seedCharacters(character) {
   //await characterDetails(db, character.data);
-  //await stats(db, character.data.upgrade, character.data.id);
+  await stats(db, character.data.upgrade, character.data.id);
   //await characterVAs(db, character.data.fetter.cv, character.data.id);
   await avatar(db, character.data);
 }

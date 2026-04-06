@@ -1,6 +1,7 @@
 :root {
   --bg: #635555;
   --color: #f3f4f6;
+  --border: #f3f4f6;
 }
 
 body {
@@ -27,4 +28,16 @@ body {
   width: 96px;
   height: 96px;
   border: 1px solid #f3f4f6;
+}
+
+.character-basic-info {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  text-align: center;
+}
+
+.character-basic-info p {
+  border-bottom: 1px solid var(--border);
+  padding: 4px 2px;
+  margin: 8px 0;
 }
