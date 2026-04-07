@@ -1,10 +1,10 @@
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 import fs from 'node:fs/promises';
-
+import db from './db.js';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
-export async function createTables(db) {
+async function createTables(db) {
   const schemaDir = join(__dirname, 'schema');
   const allFiles = await fs.readdir(schemaDir);
   const files = allFiles.filter(file => file.endsWith('.sql')).sort();
@@ -14,3 +14,5 @@ export async function createTables(db) {
     console.log(`Executed ${file}`);
   }
 }
+
+await createTables(db);

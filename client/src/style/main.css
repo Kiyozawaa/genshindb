@@ -100,4 +100,24 @@ body {
 .level-slider input[type='range'] {
   width: 70%;
   background: red;
+  margin: 0 0 8px 0;
+}
+
+.passive {
+  background: var(--card);
+  border: 1px solid var(--border);
+  padding: 5px;
+  margin: 8px 0;
+}
+
+.passive h3 {
+  margin: 5px;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.passive p {
+  margin: 5px;
+  font-size: 14px;
+  font-weight: 500;
 }

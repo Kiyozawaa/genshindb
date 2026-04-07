@@ -21,11 +21,13 @@ export async function getCharacter(id) {
   const baseStats = await getCharacterBaseStats(id);
   const ascensionStats = await getCharacterAscensionStats(id);
   const statGrowth = await getCharacterStatGrowth(id);
+  const passives = await getCharacterPassives(id);
   return {
     ...details,
     baseStats,
     ascensionStats,
-    statGrowth
+    statGrowth,
+    passives
   };
 }
 
@@ -80,4 +82,13 @@ async function getCharacterStatGrowth(characterId) {
   }
   
   return statGrowth;
+}
+
+async function getCharacterPassives(characterId) {
+  const rows = await db.all('SELECT id, name, description, icon FROM character_passives WHERE character_id = ?', characterId);
+  const passives = rows.reduce((acc, row) => {
+    acc[row.id] = { name: row.name, description: row.description }
+    return acc;
+  }, {});
+  return passives;
 }

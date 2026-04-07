@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "npx nodemon server"
+    "dev": "npx nodemon server",
+    "initDB": "node database/init.js"
   },
   "keywords": [],
   "author": "",

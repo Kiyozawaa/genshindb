@@ -10,12 +10,11 @@ import 'dotenv/config';
 const API = process.env.API;
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
-//export async function seeder() {
-  // const res = await fetch(`https://gi.yatta.moe/api/v2/en/avatar/10000119`);
-  // const char = await res.json();
-  // console.log(char.response)
-  // await seedCharacters(char);
-//}
+// export async function seeder() {
+//   const res = await fetch(`https://gi.yatta.moe/api/v2/en/avatar/10000119`);
+//   const char = await res.json();
+//   await seedCharacters(char);
+// }
 
 export async function seeder() {
   const SEEDED = '.seededDB';

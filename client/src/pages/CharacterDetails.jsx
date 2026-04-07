@@ -22,6 +22,7 @@ function CharacterDetails() {
     <>
       <BasicInfo charData={charData}/>
       <BaseStats data={charData}/>
+      <Passives data={charData.passives} />
     </>
   );
 }
@@ -105,6 +106,23 @@ function BaseStats({data}) {
       onChange={e => setLevel(levels[e.target.value])}/>
       </div>
       </>
+  );
+}
+
+function Passives({data}) {
+  return (
+    <>
+    <h2 className='details-header'>Passives</h2>
+    {Object.entries(data).map(([index, passive]) => (
+    <div
+    className='passive'
+    key={index}>
+      <h3>{passive.name}</h3>
+      <p>{passive.description}</p>
+    </div>
+      ))
+    }
+    </>
   );
 }
 
