@@ -66,8 +66,8 @@ body {
 
 .description {
   grid-column: 1/-1;
-  background: var(--card);
-  border: 1px solid var(--border);
+  background: var(--bg);
+  
   text-align: center;
   padding: 10px;
   font-size: 15px;

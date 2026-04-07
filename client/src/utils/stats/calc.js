@@ -23,9 +23,21 @@ export function calcFinalStats(baseStats, statGrowth, level, ascensionStats, asc
     const multiplier = statGrowth[baseStat['growth_curve']][level];
     result[prop] = baseStat.value * multiplier + (ascension[key] ?? 0);
   }
-  const ascentValue = ascension[ascensionStat];
-  if (!result['ascension']) result['ascension'] = {};
-  result['ascension']['stat'] = STAT_MAPPING[ascensionStat];
-  result['ascension']['value'] = ascentValue ? ascentValue * 100 : 0;
+  
+  result.ascension = formatAscensionStat(ascension, ascensionStat);
+  
   return result;
+}
+
+function formatAscensionStat(ascension, stat) {
+  const rawValue = ascension[stat] ?? 0;
+  const isFlatStat = isFlat(stat);
+  return {
+    stat: STAT_MAPPING[stat],
+    value: isFlatStat ? rawValue : rawValue * 100
+  };
+}
+
+function isFlat(stat) {
+  return stat === 'FIGHT_PROP_ELEMENT_MASTERY';
 }

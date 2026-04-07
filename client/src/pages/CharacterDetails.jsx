@@ -71,7 +71,7 @@ function BasicInfo({charData}) {
 
 function BaseStats({data}) {
   const [level, setLevel] = useState(90);
-  
+  const levels = [1, 10, 20, 30, 40, 50, 60, 70, 80, 90, 95, 100];
   const finalStats = calcFinalStats(data.baseStats, data.statGrowth, level, data.ascensionStats, data.ascension_stat);
   
   return (
@@ -83,11 +83,11 @@ function BaseStats({data}) {
         <div className='stat-value'>{Math.round(finalStats.hp)}</div>
       </div>
       <div className='stat'>
-        <div className='stat-label'>ATK</div>
+        <div className='stat-label'>Attack</div>
         <div className='stat-value'>{Math.round(finalStats.atk)}</div>
       </div>
       <div className='stat'>
-        <div className='stat-label'>DEF</div>
+        <div className='stat-label'>Defense</div>
         <div className='stat-value'>{Math.round(finalStats.def)}</div>
       </div>
       <div className='stat'>
@@ -98,10 +98,11 @@ function BaseStats({data}) {
     <div className='level-slider'>
       <div className='header'>Level: {level}</div>
       <input type='range'
-      min='1'
-      max='100'
-      value={level}
-      onChange={e => setLevel(e.target.value)}/>
+      min={0}
+      max={levels.length - 1}
+      step={1}
+      value={levels.indexOf(level)}
+      onChange={e => setLevel(levels[e.target.value])}/>
       </div>
       </>
   );
