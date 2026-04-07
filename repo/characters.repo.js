@@ -20,7 +20,7 @@ export async function getCharacter(id) {
   const details = await getCharacterDetails(id);
   const baseStats = await getCharacterBaseStats(id);
   const ascensionStats = await getCharacterAscensionStats(id);
-  const statGrowth = await getCharacterStatGrowth(`s${details.rarity}`);
+  const statGrowth = await getCharacterStatGrowth(id);
   return {
     ...details,
     baseStats,
@@ -31,7 +31,7 @@ export async function getCharacter(id) {
 
 async function getCharacterDetails(characterId) {
   const details = await db.get('SELECT * FROM characters WHERE id = ?', characterId);
-  const {id, name, element, source, weapon, rarity, birth, constellation, native, description} = details;
+  const {id, name, element, source, weapon, rarity, birth, constellation, region, native, description, ascension_stat} = details;
   return {
     id,
     name,
@@ -41,15 +41,17 @@ async function getCharacterDetails(characterId) {
     rarity,
     birth,
     constellation,
+    region,
     native,
-    description
+    description,
+    ascension_stat
   };
 }
 
 async function getCharacterBaseStats(characterId) {
-  const baseStatsRow = await db.all('SELECT stat, value FROM character_base_stats WHERE character_id = ?', characterId);
+  const baseStatsRow = await db.all('SELECT stat, value, growth_curve FROM character_base_stats WHERE character_id = ?', characterId);
   const baseStats = baseStatsRow?.reduce((acc, row) => {
-    acc[row.stat] = row.value;
+    acc[row.stat] = {'value': row.value, 'growth_curve': row.growth_curve};
     return acc;
   }, {});
   return baseStats;
@@ -65,11 +67,17 @@ async function getCharacterAscensionStats(characterId) {
   return ascensionStats;
 }
 
-async function getCharacterStatGrowth(rarity) {
-  const rows = await db.all('SELECT level, value FROM character_stat_growth WHERE rarity = ?', rarity);
-  const statGrowth = rows.reduce((acc, row) => {
-    acc[row.level] = row.value;
-    return acc;
-  }, {});
+async function getCharacterStatGrowth(characterId) {
+  const curves = await db.all('SELECT DISTINCT growth_curve FROM character_base_stats WHERE character_id = ?', characterId);
+  
+  const statGrowth = {};
+  for (const {growth_curve} of curves) {
+    const growthTable = await db.all('SELECT level, value FROM character_stat_growth WHERE stat = ?', growth_curve);
+    statGrowth[growth_curve] = growthTable.reduce((acc, row) => {
+      acc[row.level] = row.value;
+      return acc;
+    }, {});
+  }
+  
   return statGrowth;
 }

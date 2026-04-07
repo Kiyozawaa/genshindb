@@ -7,10 +7,6 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 
 export const router = express.Router();
 
-router.get('/', async (req, res) => {
-  res.send(`Hello World!`);
-});
-
 router.get('/characters', async (req, res) => {
   const charList = await getCharacterList();
   res.json(charList);

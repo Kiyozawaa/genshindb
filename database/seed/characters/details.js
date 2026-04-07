@@ -6,6 +6,8 @@ export async function characterDetails(db, data) {
     weaponType: weapon,
     rank: rarity,
     birthday: birthArray,
+    region,
+    specialProp: ascensionStat,
     fetter: {
       constellation,
       native,
@@ -20,8 +22,8 @@ export async function characterDetails(db, data) {
   //console.log({id, name, element, source, weapon, rarity, birth, constellation, native, description})
   
   await db.run(`
-    INSERT INTO characters (id, name, element, source, weapon, rarity, birth, constellation, native, description)
-    VALUES ($id, $name, $element, $source, $weapon, $rarity, $birth, $constellation, $native, $description)
+    INSERT INTO characters (id, name, element, source, weapon, rarity, birth, constellation, region, native, description, ascension_stat)
+    VALUES ($id, $name, $element, $source, $weapon, $rarity, $birth, $constellation, $region, $native, $description, $ascensionStat)
   `,
   { $id: id,
     $name: name,
@@ -31,8 +33,10 @@ export async function characterDetails(db, data) {
     $rarity: rarity,
     $birth: birth,
     $constellation: constellation,
+    $region: region,
     $native: native,
-    $description: description }
+    $description: description,
+    $ascensionStat: ascensionStat }
   );
 }
 

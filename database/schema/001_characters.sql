@@ -7,6 +7,8 @@ CREATE TABLE IF NOT EXISTS characters (
   rarity INT NOT NULL,
   birth DATE NOT NULL,
   constellation TEXT NOT NULL,
+  region TEXT NOT NULL,
   native TEXT NOT NULL,
-  description TEXT NOT NULL
-)
+  description TEXT NOT NULL,
+  ascension_stat TEXT NOT NULL
+);

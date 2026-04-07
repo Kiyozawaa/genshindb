@@ -8,18 +8,24 @@ function getAscension(level) {
   if (level <= 60) return 3;
   if (level <= 70) return 4;
   if (level <= 80) return 5;
-  if (level <= 90) return 6;
+  if (level <= 100) return 6;
 }
 
-export function calcFinalStats(baseStats, statGrowth, level, ascensionStats) {
+export function calcFinalStats(baseStats, statGrowth, level, ascensionStats, ascensionStat) {
   if (!baseStats || !statGrowth || !level || !ascensionStats) return null;
   
   const ascension = ascensionStats[getAscension(level)] ?? {};
-  const multiplier = statGrowth[level];
   const result = {};
-  
+
   for (const [key, prop] of Object.entries(STAT_MAPPING)) {
-    result[prop] = baseStats[key] * multiplier + (ascension[key] ?? 0);
+    const baseStat = baseStats[key] ?? null;
+    if (!baseStat) continue;
+    const multiplier = statGrowth[baseStat['growth_curve']][level];
+    result[prop] = baseStat.value * multiplier + (ascension[key] ?? 0);
   }
+  const ascentValue = ascension[ascensionStat];
+  if (!result['ascension']) result['ascension'] = {};
+  result['ascension']['stat'] = STAT_MAPPING[ascensionStat];
+  result['ascension']['value'] = ascentValue ? ascentValue * 100 : 0;
   return result;
 }

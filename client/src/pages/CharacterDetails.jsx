@@ -29,47 +29,81 @@ function CharacterDetails() {
 function BasicInfo({charData}) {
   return (
     <>
-    <div className='character-basic-info'>
-        <p>Name</p>
-        <p>{charData.name}</p>
-        <p>Element</p>
-        <p>{charData.element}</p>
-        <p>Source</p>
-        <p>{charData.source}</p>
-        <p>Weapon</p>
-        <p>{charData.weapon}</p>
-        <p>Rarity</p>
-        <p>{charData.rarity}</p>
-        <p>Birthday</p>
-        <p>{charData.birth}</p>
-        <p>Constellation</p>
-        <p>{charData.constellation}</p>
-        <p>Native</p>
-        <p>{charData.native}</p>
+      <h2 className='details-header'>Profile</h2>
+    <div className='character-info'>
+      <div className='stat'>
+        <div className='stat-label'>Name</div>
+        <div className='stat-value'>{charData.name}</div>
+      </div>
+      <div className='stat'>
+        <div className='stat-label'>Element</div>
+        <div className='stat-value'>{charData.element}</div>
+      </div>
+      <div className='stat'>
+        <div className='stat-label'>Source</div>
+        <div className='stat-value'>{charData.source}</div>
+      </div>
+      <div className='stat'>
+        <div className='stat-label'>Weapon</div>
+        <div className='stat-value'>{charData.weapon}</div>
+      </div>
+      <div className='stat'>
+        <div className='stat-label'>Rarity</div>
+        <div className='stat-value'>{charData.rarity}</div>
+      </div>
+      <div className='stat'>
+        <div className='stat-label'>Birthday</div>
+        <div className='stat-value'>{charData.birth}</div>
+      </div>
+      <div className='stat'>
+        <div className='stat-label'>Constellation</div>
+        <div className='stat-value'>{charData.constellation}</div>
+      </div>
+      <div className='stat'>
+        <div className='stat-label'>Native</div>
+        <div className='stat-value'>{charData.native}</div>
+      </div>
+        <div className='description'>{charData.description}</div>
     </div>
-        <p>{charData.description}</p>
     </>
   );
 }
 
 function BaseStats({data}) {
-  const [level, setLevel] = useState(1);
+  const [level, setLevel] = useState(90);
   
-  const finalStats = calcFinalStats(data.baseStats, data.statGrowth, level, data.ascensionStats);
+  const finalStats = calcFinalStats(data.baseStats, data.statGrowth, level, data.ascensionStats, data.ascension_stat);
   
   return (
     <>
-    <div className='base-stats'>
-      <p>HP: {Math.round(finalStats.hp)}</p>
-      <p>Attack: {Math.round(finalStats.atk)}</p>
-      <p>Defense: {Math.round(finalStats.def)}</p>
+      <h2 className='details-header'>Base Stats</h2>
+    <div className='character-info'>
+      <div className='stat'>
+        <div className='stat-label'>HP</div>
+        <div className='stat-value'>{Math.round(finalStats.hp)}</div>
+      </div>
+      <div className='stat'>
+        <div className='stat-label'>ATK</div>
+        <div className='stat-value'>{Math.round(finalStats.atk)}</div>
+      </div>
+      <div className='stat'>
+        <div className='stat-label'>DEF</div>
+        <div className='stat-value'>{Math.round(finalStats.def)}</div>
+      </div>
+      <div className='stat'>
+        <div className='stat-label'>{finalStats.ascension.stat}</div>
+        <div className='stat-value'>{(finalStats.ascension.value).toFixed(1) ?? 0}</div>
+      </div>
     </div>
-    <input type='range'
-    min='1'
-    max='90'
-    value={level}
-    onChange={e => setLevel(e.target.value)}/>
-    </>
+    <div className='level-slider'>
+      <div className='header'>Level: {level}</div>
+      <input type='range'
+      min='1'
+      max='100'
+      value={level}
+      onChange={e => setLevel(e.target.value)}/>
+      </div>
+      </>
   );
 }
 

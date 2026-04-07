@@ -5,4 +5,4 @@ CREATE TABLE IF NOT EXISTS character_base_stats (
   growth_curve TEXT NOT NULL,
   PRIMARY KEY (character_id, stat),
   FOREIGN KEY (character_id) REFERENCES characters(id)
-)
+);
