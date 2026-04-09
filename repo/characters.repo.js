@@ -22,12 +22,14 @@ export async function getCharacter(id) {
   const ascensionStats = await getCharacterAscensionStats(id);
   const statGrowth = await getCharacterStatGrowth(id);
   const passives = await getCharacterPassives(id);
+  const constellations = await getConstellations(id);
   return {
     ...details,
     baseStats,
     ascensionStats,
     statGrowth,
-    passives
+    passives,
+    constellations
   };
 }
 
@@ -91,4 +93,9 @@ async function getCharacterPassives(characterId) {
     return acc;
   }, {});
   return passives;
+}
+
+async function getConstellations(characterId) {
+  const rows = await db.all('SELECT id, name, description FROM constellations WHERE character_id = ?', characterId);
+  return rows;
 }

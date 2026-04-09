@@ -78,12 +78,12 @@ body {
   border: 3px solid var(--border);
   border-radius: 20px;
   text-align: center;
-  width: 20%;
-  padding: 5px;
+  padding: 8px;
   margin: 0 0 0 8px;
   font-size: 15px;
   font-weight: 400;
   text-transform: uppercase;
+  display: inline-block;
 }
 
 .level-slider {
@@ -106,6 +106,7 @@ body {
 .passive {
   background: var(--card);
   border: 1px solid var(--border);
+  border-radius: 5px;
   padding: 5px;
   margin: 8px 0;
 }
@@ -113,11 +114,13 @@ body {
 .passive h3 {
   margin: 5px;
   font-size: 15px;
-  font-weight: 600;
+  font-weight: 700;
+  color: #396e7d;
 }
 
 .passive p {
   margin: 5px;
   font-size: 14px;
   font-weight: 500;
+  word-break: break-word;
 }

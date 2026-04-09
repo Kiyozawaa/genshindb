@@ -23,6 +23,7 @@ function CharacterDetails() {
       <BasicInfo charData={charData}/>
       <BaseStats data={charData}/>
       <Passives data={charData.passives} />
+      <Constellations data={charData.constellations} />
     </>
   );
 }
@@ -122,6 +123,21 @@ function Passives({data}) {
     </div>
       ))
     }
+    </>
+  );
+}
+
+function Constellations({data}) {
+  return (
+    <>
+      <h2 className='details-header'>Constellations</h2>
+      {data.map(c => (
+      <div className='passive'
+      key={c.id}>
+        <h3>{c.name}</h3>
+        <p>{c.description}</p>
+      </div>
+      ))}
     </>
   );
 }
