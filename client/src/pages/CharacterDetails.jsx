@@ -114,15 +114,12 @@ function Passives({data}) {
   return (
     <>
     <h2 className='details-header'>Passives</h2>
-    {Object.entries(data).map(([index, passive]) => (
-    <div
-    className='passive'
-    key={index}>
-      <h3>{passive.name}</h3>
-      <p>{passive.description}</p>
+    {data.map(p => (
+    <div className='passive' key={p.id}>
+      <h3>{p.name}</h3>
+      <p>{p.description}</p>
     </div>
-      ))
-    }
+    ))}
     </>
   );
 }
