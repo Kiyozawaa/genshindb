@@ -23,11 +23,13 @@ export async function getCharacter(id) {
   const statGrowth = await getCharacterStatGrowth(id);
   const passives = await getCharacterPassives(id);
   const constellations = await getConstellations(id);
+  const talents = await getTalents(id);
   return {
     ...details,
     baseStats,
     ascensionStats,
     statGrowth,
+    talents,
     passives,
     constellations
   };
@@ -87,15 +89,20 @@ async function getCharacterStatGrowth(characterId) {
 }
 
 async function getCharacterPassives(characterId) {
-  const rows = await db.all('SELECT id, name, description, icon FROM character_passives WHERE character_id = ?', characterId);
-  // const passives = rows.reduce((acc, row) => {
-  //   acc[row.id] = { name: row.name, description: row.description }
-  //   return acc;
-  // }, {});
+  const rows = await db.all(`
+  SELECT id, name, description, icon
+  FROM character_passives
+  WHERE character_id = ?
+  ORDER BY id ASC`, characterId);
   return rows;
 }
 
 async function getConstellations(characterId) {
   const rows = await db.all('SELECT id, name, description FROM constellations WHERE character_id = ?', characterId);
+  return rows;
+}
+
+async function getTalents(characterId) {
+  const rows = await db.all('SELECT id, name, description, icon FROM character_talents WHERE character_id = ?', characterId);
   return rows;
 }

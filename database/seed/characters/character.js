@@ -3,6 +3,7 @@ import stats from './stats.js';
 import avatar from './avatar.js';
 import passives from './passives.js';
 import constellations from './constellations.js';
+import talents from './talents.js';
 import db from './../../db.js';
 
 export async function seedCharacters(character) {
@@ -12,4 +13,5 @@ export async function seedCharacters(character) {
   await avatar(db, character.data);
   await passives(db, character.data);
   await constellations(db, character.data.constellation, character.data.id);
+  await talents(db, character.data);
 }

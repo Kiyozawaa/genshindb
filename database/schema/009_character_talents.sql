@@ -1,7 +1,8 @@
-CREATE TABLE IF NOT EXISTS constellations (
+CREATE TABLE IF NOT EXISTS character_talents (
   character_id TEXT NOT NULL,
   id INTEGER NOT NULL,
   name TEXT NOT NULL,
-  description TEXT NOT NULL,
+  description NOT NULL,
+  icon TEXT NOT NULL,
   PRIMARY KEY (character_id, id)
 );

@@ -20,8 +20,9 @@ function CharacterDetails() {
   
   return (
     <>
-      <BasicInfo charData={charData}/>
-      <BaseStats data={charData}/>
+      <BasicInfo charData={charData} />
+      <BaseStats data={charData} />
+      <Talents data={charData.talents} />
       <Passives data={charData.passives} />
       <Constellations data={charData.constellations} />
     </>
@@ -110,6 +111,21 @@ function BaseStats({data}) {
   );
 }
 
+function  Talents({data}) {
+  return (
+    <>
+      <h2 className='details-header'>Talents</h2>
+      {data.map(t => (
+      <div className='passive'
+      key={t.id}>
+      <h3>{t.name}</h3>
+      <p dangerouslySetInnerHTML={{__html: t.description}}/>
+      </div>
+      ))}
+    </>
+  );
+}
+
 function Passives({data}) {
   return (
     <>
@@ -138,5 +154,4 @@ function Constellations({data}) {
     </>
   );
 }
-
 export default CharacterDetails;

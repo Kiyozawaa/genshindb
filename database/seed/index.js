@@ -17,7 +17,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 // }
 
 export async function seeder() {
-  const SEEDED = '.seededDB';
+  const SEEDED = '.seeded';
   try {
     await fs.access(SEEDED);
     return;
