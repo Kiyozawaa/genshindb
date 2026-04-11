@@ -1,6 +1,10 @@
 export default async function talents(db, data) {
+  // await details(db, data):
+  await scalings(db, data);
+}
+
+async function details(db, data) {
   const talents = data.talent;
-  console.log(`Seeding Talents for  ${data.name}`);
   for (let i=0; i<=3; i++) {
     if (talents[i]) {
       const name = talents[i]['name'];
@@ -16,4 +20,27 @@ export default async function talents(db, data) {
       });
     }
   }
+}
+
+async function scalings(db, data) {
+  const talents = data.talent;
+  const stmt = await db.prepare(`INSERT INTO talent_scalings (character_id, talent_id, level, scaling_data)
+    VALUES ($characterId, $talentId, $level, $scalingData)`);
+  for (const [id, talent] of Object.entries(talents)) {
+    if (id > 3) return;
+    for (const [_, promote] of Object.entries(talent.promote)) {
+      const level = promote.level;
+      const desc = promote.description;
+      const params = promote.params;
+      const scaling = {desc, params};
+      const scalingData = JSON.stringify(scaling);
+      await stmt.run({
+        $characterId: data.id,
+        $talentId: id,
+        $level: level,
+        $scalingData: scalingData
+      });
+    }
+  }
+  await stmt.finalize();
 }

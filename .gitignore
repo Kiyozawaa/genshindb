@@ -3,4 +3,3 @@ node_modules/
 *.db
 temp/
 .seeded
-.seeded
