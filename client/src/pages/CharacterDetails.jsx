@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import { getCharacter } from './../api.js';
 import { calcFinalStats } from './../utils/stats/calc.js';
-import { parseDescription } from './../utils/parseText.js';
+import { parseDescription, talentPromote } from './../utils/parseText.js';
 
 function CharacterDetails() {
   const { id } = useParams();
@@ -121,8 +121,17 @@ function  Talents({data}) {
       key={t.id}>
       <h3>{t.name}</h3>
       <p dangerouslySetInnerHTML={{ __html : parseDescription(t.description)}} />
+      <TalentsScaling data={t.promote}/>
       </div>
       ))}
+    </>
+  );
+}
+
+function TalentsScaling({data}) {
+  const parsedTalentScaling = talentPromote(data);
+  return (
+    <>
     </>
   );
 }
