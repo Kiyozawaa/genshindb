@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import { getCharacter } from './../api.js';
 import { calcFinalStats } from './../utils/stats/calc.js';
+import { parseDescription } from './../utils/parseText.js';
 
 function CharacterDetails() {
   const { id } = useParams();
@@ -119,7 +120,7 @@ function  Talents({data}) {
       <div className='passive'
       key={t.id}>
       <h3>{t.name}</h3>
-      <p dangerouslySetInnerHTML={{__html: t.description}}/>
+      <p dangerouslySetInnerHTML={{ __html : parseDescription(t.description)}} />
       </div>
       ))}
     </>
@@ -133,7 +134,7 @@ function Passives({data}) {
     {data.map(p => (
     <div className='passive' key={p.id}>
       <h3>{p.name}</h3>
-      <p>{p.description}</p>
+      <p dangerouslySetInnerHTML={{ __html : parseDescription(p.description)}} />
     </div>
     ))}
     </>
@@ -144,11 +145,11 @@ function Constellations({data}) {
   return (
     <>
       <h2 className='details-header'>Constellations</h2>
-      {data.map(c => (
+      {data.map((c, i) => (
       <div className='passive'
       key={c.id}>
-        <h3>{c.name}</h3>
-        <p>{c.description}</p>
+        <h3>{i+1}. {c.name}</h3>
+        <p dangerouslySetInnerHTML={{ __html: parseDescription(c.description)}}/>
       </div>
       ))}
     </>
