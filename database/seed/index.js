@@ -36,10 +36,10 @@ export async function seeder() {
       
       await Promise.all(
         batch.map(async (charId) => {
-          // if (exists.has(charId)) {
-          //   console.log(`Skipping ${charId}`);
-          //   return;
-          // }
+          if (exists.has(charId)) {
+            console.log(`Skipping ${charId}`);
+            return;
+          }
           console.log(`Fetching ${charId}`);
           const character = await fetchWithRetry(`${API}/${charId}`);
           if (!character) return;
@@ -48,7 +48,7 @@ export async function seeder() {
       );
       await sleep(300);
     }
-    //await statGrowth(db);
+    await statGrowth(db);
     await db.run('COMMIT');
     await fs.writeFile(SEEDED, '');
   } catch (err) {

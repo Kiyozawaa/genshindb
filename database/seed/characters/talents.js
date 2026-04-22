@@ -1,5 +1,5 @@
 export default async function talents(db, data) {
-  // await details(db, data):
+  await details(db, data);
   await scalings(db, data);
 }
 

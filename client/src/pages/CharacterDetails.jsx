@@ -133,6 +133,11 @@ function TalentScaling({data}) {
   const parsed = parseTalent(data[level]);
   return (
     <>
+      <div className='talent-slider'>
+        <strong>Attributes</strong>
+        <p>Level: {level}</p>
+        <input type='range' value={level} onChange={e => setLevel(e.target.value)} min={1} max={15}/>
+      </div>
       <div className='talent-scaling'>
       {Object.entries(parsed).map(([k, v]) => (
       <>
@@ -148,10 +153,6 @@ function TalentScaling({data}) {
         </div>
       </>
       ))}
-      </div>
-      <div className='level-slider'>
-        <div className='header'>Level: {level}</div>
-      <input type='range' value={level} onChange={e => setLevel(e.target.value)} min={1} max={15}/>
       </div>
     </>
   );

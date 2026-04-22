@@ -140,3 +140,13 @@ body {
   background: var(--bg);
   padding: 10px;
 }
+
+.talent-slider {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  padding: 0 0 0 8px;
+}
+
+.talent-slider p {
+  text-align: right;
+}
