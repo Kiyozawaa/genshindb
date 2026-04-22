@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import { getCharacter } from './../api.js';
 import { calcFinalStats } from './../utils/stats/calc.js';
-import { parseDescription, talentPromote } from './../utils/parseText.js';
+import { parseDescription, parseTalent } from './../utils/parseText.js';
 
 function CharacterDetails() {
   const { id } = useParams();
@@ -121,17 +121,38 @@ function  Talents({data}) {
       key={t.id}>
       <h3>{t.name}</h3>
       <p dangerouslySetInnerHTML={{ __html : parseDescription(t.description)}} />
-      <TalentsScaling data={t.promote}/>
+      <TalentScaling data={t.promote}/>
       </div>
       ))}
     </>
   );
 }
 
-function TalentsScaling({data}) {
-  const parsedTalentScaling = talentPromote(data);
+function TalentScaling({data}) {
+  const [level, setLevel] = useState(9);
+  const parsed = parseTalent(data[level]);
   return (
     <>
+      <div className='talent-scaling'>
+      {Object.entries(parsed).map(([k, v]) => (
+      <>
+        <div
+        key={k + 'name'}
+        className='talent-scaling-name'>
+          {k}
+        </div>
+        <div
+        key={k + 'value'}
+        className='talent-scaling-value'>
+          {v}
+        </div>
+      </>
+      ))}
+      </div>
+      <div className='level-slider'>
+        <div className='header'>Level: {level}</div>
+      <input type='range' value={level} onChange={e => setLevel(e.target.value)} min={1} max={15}/>
+      </div>
     </>
   );
 }

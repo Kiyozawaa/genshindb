@@ -124,3 +124,19 @@ body {
   font-weight: 500;
   word-break: break-word;
 }
+
+.talent-scaling {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px 0;
+  font-size: 14px;
+  padding: 8px;
+}
+
+.talent-scaling-value {
+  text-align: right;
+}
+.talent-scaling-name, .talent-scaling-value {
+  background: var(--bg);
+  padding: 10px;
+}

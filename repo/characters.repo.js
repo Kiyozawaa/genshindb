@@ -104,5 +104,29 @@ async function getConstellations(characterId) {
 
 async function getTalents(characterId) {
   const rows = await db.all('SELECT id, name, description, icon FROM character_talents WHERE character_id = ?', characterId);
+  const scalingRows = await getTalentScalings(characterId);
+  const scaling = scalingRows.reduce((acc, row) => {
+    if (!acc[row.talent_id]) acc[row.talent_id] = {};
+    acc[row.talent_id][row.level] = JSON.parse(row.scaling_data);
+    return acc;
+    }, {});
+  const talents = rows.map(r => ({
+    ...r,
+    promote: scaling[r.id] ?? {}
+  }
+    ));
+  
+  return talents;
+}
+
+async function getTalentScalings(characterId) {
+  const rows = await db.all(`SELECT talent_id, level, scaling_data FROM talent_scalings WHERE character_id = ?`, characterId);
+  const result = rows.map(r => (
+    {
+      id: r.talent_id,
+      level: r.level,
+      scaling: JSON.parse(r.scaling_data)
+    }
+    ));
   return rows;
 }
