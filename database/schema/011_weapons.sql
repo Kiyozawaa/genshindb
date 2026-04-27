@@ -1,0 +1,9 @@
+CREATE TABLE IF NOT EXISTS weapons(
+  id INTEGER PRIMARY KEY,
+  name TEXT NOT NULL,
+  rank INTEGER NOT NULL,
+  type TEXT NOT NULL,
+  description TEXT NOT NULL,
+  specialProp TEXT NOT NULL,
+  icon TEXT NOT NULL
+);
