@@ -1,3 +1,6 @@
+import 'dotenv/config';
+const API = process.env.API;
+
 export async function getItemListFromAPI(url) {
   const ids = [];
   const conn = await fetch(url);
