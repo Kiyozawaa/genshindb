@@ -1,6 +1,6 @@
-export async function getCharListFromAPI(API) {
+export async function getItemListFromAPI(url) {
   const ids = [];
-  const conn = await fetch(API);
+  const conn = await fetch(url);
   const res = await conn.json();
   for (const id of Object.keys(res.data.items)) {
     ids.push(id);
@@ -8,8 +8,8 @@ export async function getCharListFromAPI(API) {
   return ids;
 }
 
-export async function characterExists(db) {
-  const raw = await db.all('SELECT id FROM characters');
+export async function itemExists(db, table) {
+  const raw = await db.all(`SELECT id FROM ${table}`);
   const exists = new Set(raw.map(e => e.id));
   return exists;
 }
@@ -35,4 +35,25 @@ export async function fetchWithRetry(url, RETRIES=3) {
 
 export function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+export async function seedItems(itemList, exists, type='avatar', seeder) {
+  const BATCH_SIZE = 5;
+    for (let i = 0; i < itemList.length; i+=BATCH_SIZE) {
+      const batch = itemList.slice(i, i+BATCH_SIZE);
+      
+      await Promise.all(
+        batch.map(async (itemId) => {
+          if (exists.has(itemId)) {
+            console.log(`Skipping ${itemId}`);
+            return;
+          }
+          console.log(`Fetching ${itemId}`);
+          const character = await fetchWithRetry(`${API}/${type}/${itemId}`);
+          if (!character) return;
+          await seeder(character);
+        })
+      );
+      await sleep(300);
+    }
 }
