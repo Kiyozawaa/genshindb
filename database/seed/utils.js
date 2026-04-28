@@ -52,9 +52,9 @@ export async function seedItems(itemList, exists, type='avatar', seeder) {
             return;
           }
           console.log(`Fetching ${itemId}`);
-          const character = await fetchWithRetry(`${API}/${type}/${itemId}`);
-          if (!character) return;
-          await seeder(character);
+          const item = await fetchWithRetry(`${API}/${type}/${itemId}`);
+          if (!item) return;
+          await seeder(item);
         })
       );
       await sleep(300);
