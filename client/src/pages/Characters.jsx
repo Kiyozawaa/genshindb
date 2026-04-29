@@ -2,7 +2,7 @@ import { Link } from 'react-router';
 
 function Characters({charList}) {
   return (
-  <div className='character-list'>
+  <div className='item-list'>
     {charList.map(char => (
       <Item key={char.id} char={char}/>
     ))}
@@ -15,11 +15,11 @@ function Item({char}) {
   const iconUrl = `https://gi.yatta.moe/assets/UI/`;
   return (
     <Link to={`/characters/${char.id}`}>
-    <div className='character-card'>
+    <div className='item-card'>
       <img
       className='icon'
       src={iconUrl+char.icon+'.png'}/>
-      <div className='char-name'>
+      <div className='item-name'>
       {char.name}</div>
         
       </div>
