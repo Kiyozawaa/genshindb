@@ -150,3 +150,54 @@ body {
 .talent-slider p {
   text-align: right;
 }
+
+
+
+
+.weapon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.weapon-stat {
+  display: flex;
+  min-width: 300px;
+  border: 1px solid var(--border);
+  padding: 10px;
+  justify-content: center;
+}
+
+.weapon-stat-label {
+  color: var(--color);
+  flex: 1;
+  text-transform: uppercase;
+  font-size: 0.85em;
+}
+
+.weapon-stat-value {
+  color: var(--color):
+  flex: 1;
+}
+
+.flex-box {
+  display: flex;
+}
+
+.flex-box h3 {
+  flex: 1;
+}
+
+.grid {
+  display: flex;
+}
+
+.box {
+  border: 1px solid var(--border);
+  text-align: center;
+  padding: 5px;
+}
+
+.box.active {
+  background: var(--card);
+}
