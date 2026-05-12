@@ -5,6 +5,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 
 export default async function statGrowth(db) {
   await baseStatGrowth(db);
+  await secondaryStatGrowth(db);
 }
 
 async function baseStatGrowth(db) {
@@ -30,6 +31,22 @@ async function insertBaseStatGrowth(filepath, db) {
         $curve: key
       });
     }
+  }
+  await stmt.finalize();
+}
+
+async function secondaryStatGrowth(db) {
+  const stmt = await db.prepare(`
+    INSERT INTO weapon_growth_secondary (level, value)
+    VALUES ($level, $value)`);
+  const filepath = join(__dirname, 'curves', 'levelmultipliers', 'secondary.json');
+  const buffer = await fs.readFile(filepath);
+  const data = JSON.parse(buffer.toString());
+  for (const [level, value] of Object.entries(data)) {
+    await stmt.run({
+      $level: level,
+      $value: value
+    });
   }
   await stmt.finalize();
 }
