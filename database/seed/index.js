@@ -5,6 +5,8 @@ import { seedCharacters } from './characters/character.js';
 import { seedWeapons } from './weapons/weapon.js';
 import { getItemListFromAPI, itemExists, seedItems} from './utils.js';
 import { statGrowth } from './characters/stats.js';
+import weaponStatGrowth from './weapons/statGrowth.js';
+import weaponAscensionGrowth from  './weapons/ascension.js';
 import db from './../db.js';
 import 'dotenv/config';
 
@@ -32,6 +34,8 @@ export async function seeder() {
     await seedItems(wepIdList, wepExists, 'weapon', seedWeapons);
     
     await statGrowth(db);
+    await weaponStatGrowth(db);
+    await weaponAscensionGrowth(db);
     await db.run('COMMIT');
     await fs.writeFile(SEEDED, '');
   } catch (err) {
