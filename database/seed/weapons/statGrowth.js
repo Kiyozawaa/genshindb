@@ -1,6 +1,7 @@
 import fs from 'node:fs/promises';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'node:path';
+
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 export default async function statGrowth(db) {
