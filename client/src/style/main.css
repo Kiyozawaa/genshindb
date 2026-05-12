@@ -199,5 +199,6 @@ body {
 }
 
 .box.active {
-  background: var(--card);
+  background: var(--color);
+  color: var(--bg);
 }

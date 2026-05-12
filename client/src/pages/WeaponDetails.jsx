@@ -63,21 +63,18 @@ function BasicInfo({data}) {
 function Passives({data}) {
   if (data.length < 1) return;
   const [refinement, setRefinement] = useState(1);
-  
   return (
     <>
       <div className='passive'>
         <div className='flex-box'>
           <h3>Refinement {refinement}</h3>
-          <div className='grid'>
-            <div className='box active'>1</div>
-            <div className='box'>2</div>
-            <div className='box'>3</div>
-            <div className='box'>4</div>
-            <div className='box'>5</div>
-          </div>
+          {[1, 2, 3, 4, 5].map(n => (
+          <div key={n}
+          className={`box ${refinement === n ? 'active' : ''}`}
+          onClick={() => setRefinement(n)}>{n}</div>
+          ))}
         </div>
-        <p dangerouslySetInnerHTML={{ __html: parseDescription(data[refinement].description)}}/>
+        <p dangerouslySetInnerHTML={{ __html: parseDescription(data[refinement - 1].description)}}/>
       </div>
     </>
   )
