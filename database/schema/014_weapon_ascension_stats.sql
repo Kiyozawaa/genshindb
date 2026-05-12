@@ -1,4 +1,4 @@
-CREATE TABLE weapon_ascension_stats (
+CREATE TABLE IF NOT EXISTS weapon_ascension_stats (
   id INTEGER NOT NULL,
   stat TEXT NOT NULL,
   value REAL NOT NULL,
