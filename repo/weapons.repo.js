@@ -12,6 +12,7 @@ export async function getWeapon(id) {
   const secondaryStats = await getSecondaryStats(id);
   const baseGrowth = await getBaseGrowthTable(baseStats.growth);
   const secondaryGrowth = await getSecondaryGrowthTable();
+  const ascensionStats = await getAscensionStats(details.rank);
   return {
     ...details,
     passives,
@@ -21,7 +22,8 @@ export async function getWeapon(id) {
     },
     growth: {
       base: baseGrowth,
-      secondary: secondaryGrowth
+      secondary: secondaryGrowth,
+      ascension: ascensionStats
     }
   };
 }
@@ -51,7 +53,7 @@ async function getBaseGrowthTable(curve) {
   const map = {};
   rows.map(r => (
     map[r.level] = r.value
-    ));
+  ));
   return map;
 }
 
@@ -60,7 +62,15 @@ async function getSecondaryGrowthTable() {
   const map = {};
   rows.map(r => (
     map[r.level] = r.value
-    )
-  );
+  ));
+  return map;
+}
+
+async function getAscensionStats(rank) {
+  const rows = await db.all('SELECT ascension, value FROM weapon_growth_ascension WHERE rank = ?', rank);
+  const map = {};
+  rows.map(r => (
+    map[r.ascension] = r.value
+  ));
   return map;
 }
