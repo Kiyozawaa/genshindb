@@ -8,9 +8,15 @@ export async function getWeaponList() {
 export async function getWeapon(id) {
   const details = await getWeaponDetails(id);
   const passives = await getWeaponPassives(id);
+  const baseStats = await getBaseStats(id);
+  const ascensionStats = await getAscensionStats(id);
   return {
     ...details,
-    passives
+    passives,
+    stats: {
+      base: baseStats,
+      ascension: ascensionStats
+    }
   };
 }
 
@@ -21,5 +27,15 @@ async function getWeaponDetails(id) {
 
 async function getWeaponPassives(id) {
   const rows = await db.all('SELECT * FROM weapon_passives WHERE id = ?', id);
+  return rows;
+}
+
+async function getBaseStats(id) {
+  const rows = await db.get('SELECT stat, value, growth FROM weapon_base_stats WHERE id = ?', id);
+  return rows;
+}
+
+async function getAscensionStats(id) {
+  const rows = await db.get('SELECT stat, value, growth FROM weapon_ascension_stats WHERE id = ?', id);
   return rows;
 }
