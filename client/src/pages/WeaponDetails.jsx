@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import { getWeapon } from './../api.js';
 import { STAT_MAPPING } from './../utils/mapping.js';
-import { calcBaseStat } from './../utils/stats/calcWep.js';
+import { calcBaseStat, calcSecondaryStat } from './../utils/stats/calcWep.js';
 import { parseDescription } from './../utils/parseText.js';
 function WeaponDetails() {
   const { id } = useParams();
@@ -28,7 +28,11 @@ function WeaponDetails() {
 
 function BasicInfo({data}) {
   const [level, setLevel] = useState(90);
-  const baseStat = calcBaseStat(data.stats.base, data.growth.ascension, data.growth.base, level);
+  const baseStat = calcBaseStat(data.stats.base, data.growth.ascension, data.growth.base, level);;
+  let secondaryStat;
+  if (data.rank > 2) {
+    secondaryStat = calcSecondaryStat(data.stats.secondary, data.growth.secondary, level);
+  }
   return (
   <>
     <h2 className='details-header'>Basic Info</h2>
@@ -47,13 +51,13 @@ function BasicInfo({data}) {
       </div>
       <div className='weapon-stat'>
         <div className='weapon-stat-label'>Base ATK</div>
-        <div className='weapon-stat-value'>{Math.round(baseStat)}</div>
+        <div className='weapon-stat-value'>{baseStat}</div>
       </div>
       
       {(data.specialProp !== 'None') &&
       <div className='weapon-stat'>
         <div className='weapon-stat-label'>{STAT_MAPPING[data.specialProp]}</div>
-        <div className='weapon-stat-value'></div>
+        <div className='weapon-stat-value'>{secondaryStat}</div>
       </div>
       }
 

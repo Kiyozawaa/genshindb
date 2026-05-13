@@ -38,6 +38,6 @@ function formatAscensionStat(ascension, stat) {
   };
 }
 
-function isFlat(stat) {
+export function isFlat(stat) {
   return stat === 'FIGHT_PROP_ELEMENT_MASTERY';
 }
