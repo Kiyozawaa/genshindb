@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import { getWeapon } from './../api.js';
 import { STAT_MAPPING } from './../utils/mapping.js';
+import { calcBaseStat } from './../utils/stats/calcWep.js';
 import { parseDescription } from './../utils/parseText.js';
 function WeaponDetails() {
   const { id } = useParams();
@@ -26,6 +27,8 @@ function WeaponDetails() {
 }
 
 function BasicInfo({data}) {
+  const [level, setLevel] = useState(90);
+  const baseStat = calcBaseStat(data.stats.base, data.growth.ascension, data.growth.base, level);
   return (
   <>
     <h2 className='details-header'>Basic Info</h2>
@@ -43,8 +46,8 @@ function BasicInfo({data}) {
         <div className='weapon-stat-value'>{data.type}</div>
       </div>
       <div className='weapon-stat'>
-        <div className='weapon-stat-label'>Base Stat</div>
-        <div className='weapon-stat-value'></div>
+        <div className='weapon-stat-label'>Base ATK</div>
+        <div className='weapon-stat-value'>{Math.round(baseStat)}</div>
       </div>
       
       {(data.specialProp !== 'None') &&
@@ -56,6 +59,7 @@ function BasicInfo({data}) {
 
       <div className='description'>{data.description}</div>
     </div>
+    <LevelSlider level={level} setLevel={setLevel} />
   </>
   );
 }
@@ -78,6 +82,23 @@ function Passives({data}) {
       </div>
     </>
   )
+}
+
+function LevelSlider({level, setLevel}) {
+  const levels = [1, 10, 20, 30, 40, 50, 60, 70, 80, 90];
+  return (
+    <>
+      <div className='level-slider'>
+      <div className='header'>Level: {level}</div>
+      <input type='range'
+      min={0}
+      max={levels.length - 1}
+      step={1}
+      value={levels.indexOf(level)}
+      onChange={e => setLevel(levels[e.target.value])}/>
+      </div>
+    </>
+  );
 }
 
 export default WeaponDetails;

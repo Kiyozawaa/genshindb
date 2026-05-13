@@ -1,6 +1,6 @@
 import { STAT_MAPPING } from './../mapping.js';
 
-function getAscension(level) {
+export function getAscension(level) {
   if (!level) return;
   if (level <= 20) return 0;
   if (level <= 40) return 1;

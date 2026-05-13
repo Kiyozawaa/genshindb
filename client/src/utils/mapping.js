@@ -8,6 +8,8 @@ export const STAT_MAPPING = {
   'FIGHT_PROP_HEAL_ADD': 'healing bonus',
   'FIGHT_PROP_CHARGE_EFFICIENCY': 'energy recharge',
   'FIGHT_PROP_ATTACK_PERCENT': 'atk %',
+  'FIGHT_PROP_HP_PERCENT': 'hp %',
+  'FIGHT_PROP_DEFENSE_PERCENT': 'def %',
   'FIGHT_PROP_ROCK_ADD_HURT': 'geo dmg bonus',
   'FIGHT_PROP_WIND_ADD_HURT': 'anemo dmg bonus',
   'FIGHT_PROP_FIRE_ADD_HURT': 'pyro dmg bonus',
