@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
+import NavBar from './../components/NavBar.jsx';
 import { getCharacter } from './../api.js';
 import { calcFinalStats } from './../utils/stats/calc.js';
 import { parseDescription, parseTalent } from './../utils/parseText.js';
@@ -20,13 +21,14 @@ function CharacterDetails() {
   if (!charData) return <div>Loading...</div>;
   
   return (
-    <>
+    <div className='content'>
       <BasicInfo charData={charData} />
       <BaseStats data={charData} />
       <Talents data={charData.talents} />
       <Passives data={charData.passives} />
       <Constellations data={charData.constellations} />
-    </>
+      <NavBar/>
+    </div>
   );
 }
 

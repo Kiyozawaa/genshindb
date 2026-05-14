@@ -25,3 +25,9 @@ export async function getWeapon(id) {
   const res = await conn.json();
   return res;
 }
+
+export async function getBdays() {
+  const conn = await fetch('http://localhost:8004/bdays');
+  const res = await conn.json();
+  return res;
+}

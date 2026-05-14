@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
+import NavBar from './../components/NavBar.jsx';
 import { getWeapon } from './../api.js';
 import { STAT_MAPPING } from './../utils/mapping.js';
 import { calcBaseStat, calcSecondaryStat } from './../utils/stats/calcWep.js';
@@ -19,10 +20,11 @@ function WeaponDetails() {
   if (!weapon) return <div>Loading...</div>;
   
   return (
-  <>
+  <div className='content'>
     <BasicInfo data={weapon}/>
     <Passives data={weapon.passives}/>
-  </>
+    <NavBar/>
+  </div>
   );
 }
 

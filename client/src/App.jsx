@@ -1,6 +1,7 @@
 import { getCharacterList } from './api.js';
 import { useEffect, useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router';
+import Home from './pages/Home.jsx';
 import Characters from './pages/Characters.jsx';
 import CharacterDetails from './pages/CharacterDetails.jsx';
 import Weapons from './pages/Weapons.jsx';
@@ -20,6 +21,7 @@ export default function App() {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path='/' element={<Home/>}/>
         <Route path='/characters'
         element={<Characters charList={charList}/>}/>
         <Route path='/characters/:id' element={<CharacterDetails/>}/>

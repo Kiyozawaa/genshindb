@@ -1,7 +1,7 @@
 import express from 'express';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
-import { getCharacter, getCharacterList } from './../repo/characters.repo.js';
+import { getCharacter, getCharacterList, getUpcomingBirthdays } from './../repo/characters.repo.js';
 import { getWeapon, getWeaponList } from './../repo/weapons.repo.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -29,4 +29,9 @@ router.get('/weapon/:id', async (req, res) => {
   const { id } = req.params;
   const wep = await getWeapon(id);
   res.json(wep);
+});
+
+router.get('/bdays', async (req, res) => {
+  const bday = await getUpcomingBirthdays();
+  res.json(bday);
 });

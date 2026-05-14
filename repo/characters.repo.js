@@ -84,7 +84,6 @@ async function getCharacterStatGrowth(characterId) {
       return acc;
     }, {});
   }
-  
   return statGrowth;
 }
 
@@ -129,4 +128,27 @@ async function getTalentScalings(characterId) {
     }
     ));
   return rows;
+}
+
+export async function getUpcomingBirthdays() {
+  const characters = await db.all(`
+  SELECT c.id, c.name, c.birth, a.uri AS icon
+  FROM characters c
+  LEFT JOIN character_avatars a
+  ON c.id = a.character_id
+  AND a.type = 'icon'
+  `);
+  const today = new Date();
+  const currMonth = today.getMonth() + 1;
+  const currDay = today.getDay();
+  const upcoming = characters.map(char => {
+    const [month, date] = char.birth.split('/').map(Number);
+    const bday = new Date(today.getFullYear(), month - 1, date);
+    if (bday < today) bday.setFullYear(today.getFullYear() + 1);
+    const daysUntil = Math.ceil((bday - today) / (1000 * 60 * 60 * 24));
+    return { ...char, daysUntil }
+  })
+  .sort((a, b) => a.daysUntil - b.daysUntil)
+  .splice(0, 8);
+  return upcoming;
 }

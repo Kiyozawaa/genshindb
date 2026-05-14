@@ -34,7 +34,7 @@ async function getWeaponDetails(id) {
 }
 
 async function getWeaponPassives(id) {
-  const rows = await db.all('SELECT * FROM weapon_passives WHERE id = ?', id);
+  const rows = await db.all('SELECT ascension, description FROM weapon_passives WHERE id = ?', id);
   return rows;
 }
 

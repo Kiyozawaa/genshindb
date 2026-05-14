@@ -1,11 +1,15 @@
 import { Link } from 'react-router';
+import NavBar from './../components/NavBar.jsx';
 
 function Characters({charList}) {
   return (
+  <div className='content'>
   <div className='item-list'>
     {charList.map(char => (
       <Item key={char.id} char={char}/>
     ))}
+  </div>
+  <NavBar/>
   </div>
   );
 }

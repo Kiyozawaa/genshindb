@@ -1,6 +1,7 @@
 import { getWeaponList } from './../api.js';
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router';
+import NavBar from './../components/NavBar.jsx';
 
 function Weapons() {
   const [weaponList, setWeaponList] = useState(null);
@@ -15,13 +16,14 @@ function Weapons() {
   
   if (!weaponList) return <div>Loading...</div>;
   return (
-  <>
+  <div className='content'>
     <div className='item-list'>
       {weaponList.map(w => (
           <Item wep={w}/>
       ))}
     </div>
-  </>
+  <NavBar/>
+  </div>
   )
 }
 
