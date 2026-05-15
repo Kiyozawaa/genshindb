@@ -24,7 +24,7 @@ function Birthdays() {
     }, []);
   if (!bdays) return 'Loading...';
   return (
-  <div className='item-list'>
+  <div className='item-list-home'>
     {bdays.map(c => (
     <Item key={c.id} char={c}/>
     ))}
@@ -35,14 +35,13 @@ function Birthdays() {
 function Item({char}) {
   const iconUrl = `https://gi.yatta.moe/assets/UI/`;
   return (
-    <Link to={`/characters/${char.id}`}>
-    <div className='item-card'>
+    <Link className='a-home' to={`/characters/${char.id}`}>
+    <div className='item-card-home'>
       <img
-      className='icon'
+      className='icon-home'
       src={iconUrl+char.icon+'.png'}/>
-      <div className='item-name'>
-      {char.name}</div>
-        
+      <div className='item-name-home'>
+      {char.birth}</div>
       </div>
       </Link>
   );

@@ -18,7 +18,7 @@ function Characters({charList}) {
 function Item({char}) {
   const iconUrl = `https://gi.yatta.moe/assets/UI/`;
   return (
-    <Link to={`/characters/${char.id}`}>
+    <Link className='a' to={`/characters/${char.id}`}>
     <div className='item-card'>
       <img
       className='icon'

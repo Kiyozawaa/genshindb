@@ -31,7 +31,7 @@ function Item({wep}) {
   if (wep.id >= 310001) return; //prevents skin from showing up
   const iconUrl = `https://gi.yatta.moe/assets/UI/`;
   return (
-    <Link to={`/weapon/${wep.id}`}>
+    <Link className='a' to={`/weapon/${wep.id}`}>
     <div className='item-card'>
       <img
       className='icon'
