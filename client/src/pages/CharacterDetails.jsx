@@ -5,6 +5,8 @@ import { getCharacter } from './../api.js';
 import { calcFinalStats } from './../utils/stats/calc.js';
 import { parseDescription, parseTalent } from './../utils/parseText.js';
 
+const iconURL = 'https://gi.yatta.moe/assets/UI/';
+
 function CharacterDetails() {
   const { id } = useParams();
   const [charData, setCharData] = useState(null);
@@ -121,7 +123,10 @@ function  Talents({data}) {
       {data.map(t => (
       <div className='passive'
       key={t.id}>
-      <h3>{t.name}</h3>
+      <div className='skill-name'>
+        <img className='skill-icon' src={iconURL+t.icon+'.png'}/>
+        <h3>{t.name}</h3>
+      </div>
       <p dangerouslySetInnerHTML={{ __html : parseDescription(t.description)}} />
       <TalentScaling data={t.promote}/>
       </div>
@@ -166,7 +171,10 @@ function Passives({data}) {
     <h2 className='details-header'>Passives</h2>
     {data.map(p => (
     <div className='passive' key={p.id}>
+      <div className='skill-name'>
+      <img className='skill-icon' src={iconURL+p.icon+'.png'}/>
       <h3>{p.name}</h3>
+      </div>
       <p dangerouslySetInnerHTML={{ __html : parseDescription(p.description)}} />
     </div>
     ))}

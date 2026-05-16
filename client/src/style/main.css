@@ -127,6 +127,16 @@ body {
   margin: 8px 0;
 }
 
+.skill-name {
+  display: flex;
+  align-items: center;
+}
+
+.skill-icon {
+  width: 48px;
+  height: 48px;
+}
+
 .passive h3 {
   margin: 5px;
   font-size: 15px;
