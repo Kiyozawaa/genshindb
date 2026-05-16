@@ -8,6 +8,7 @@ export async function characterDetails(db, data) {
     birthday: birthArray,
     region,
     specialProp: ascensionStat,
+    release,
     fetter: {
       constellation,
       native,
@@ -18,12 +19,10 @@ export async function characterDetails(db, data) {
   const source = 'Vision';
   const [birthMonth, birthDate] = birthArray;
   const birth = `${birthMonth}/${birthDate}`;
-
-  //console.log({id, name, element, source, weapon, rarity, birth, constellation, native, description})
   
   await db.run(`
-    INSERT INTO characters (id, name, element, source, weapon, rarity, birth, constellation, region, native, description, ascension_stat)
-    VALUES ($id, $name, $element, $source, $weapon, $rarity, $birth, $constellation, $region, $native, $description, $ascensionStat)
+    INSERT INTO characters (id, name, element, source, weapon, rarity, birth, release, constellation, region, native, description, ascension_stat)
+    VALUES ($id, $name, $element, $source, $weapon, $rarity, $birth, $release, $constellation, $region, $native, $description, $ascensionStat)
   `,
   { $id: id,
     $name: name,
@@ -32,6 +31,7 @@ export async function characterDetails(db, data) {
     $weapon: weapon,
     $rarity: rarity,
     $birth: birth,
+    $release: release,
     $constellation: constellation,
     $region: region,
     $native: native,

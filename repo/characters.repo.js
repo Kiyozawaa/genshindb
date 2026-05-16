@@ -37,7 +37,7 @@ export async function getCharacter(id) {
 
 async function getCharacterDetails(characterId) {
   const details = await db.get('SELECT * FROM characters WHERE id = ?', characterId);
-  const {id, name, element, source, weapon, rarity, birth, constellation, region, native, description, ascension_stat} = details;
+  const {id, name, element, source, weapon, rarity, birth, release, constellation, region, native, description, ascension_stat} = details;
   return {
     id,
     name,
@@ -46,6 +46,7 @@ async function getCharacterDetails(characterId) {
     weapon: WEAPON_MAPPING[weapon],
     rarity,
     birth,
+    release,
     constellation,
     region,
     native,
@@ -130,7 +131,7 @@ async function getTalentScalings(characterId) {
   return rows;
 }
 
-export async function getUpcomingBirthdays() {
+async function getUpcomingBirthdays() {
   const characters = await db.all(`
   SELECT c.id, c.name, c.birth, a.uri AS icon
   FROM characters c
@@ -149,6 +150,31 @@ export async function getUpcomingBirthdays() {
     return { ...char, daysUntil }
   })
   .sort((a, b) => a.daysUntil - b.daysUntil)
-  .splice(0, 8);
+  .slice(0, 8);
   return upcoming;
+}
+
+async function getNewReleases() {
+  const chars = await db.all(`
+  SELECT c.id, c.name, c.release, a.uri AS icon
+  FROM characters c
+  LEFT JOIN character_avatars a
+  ON c.id = a.character_id
+  AND a.type = 'icon'`);
+  const today = new Date();
+  const newReleases = chars.map(char => {
+    const release = new Date(char.release * 1000);
+    const diff = Math.ceil((today - release) / (1000 * 60 * 60 *24));
+    return { ...char, diff };
+  })
+  .sort((a, b) => a.diff - b.diff)
+  .filter(c => c.diff <= 50)
+  .slice(0, 3);
+  return newReleases;
+}
+
+export async function homepage() {
+  const upcoming = await getUpcomingBirthdays();
+  const newCharacters = await getNewReleases();
+  return [upcoming, newCharacters];
 }
