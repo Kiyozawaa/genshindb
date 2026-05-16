@@ -1,7 +1,19 @@
 import { Link } from 'react-router';
+import { useEffect, useState } from 'react';
 import NavBar from './../components/NavBar.jsx';
+import { getCharacterList } from './../api.js';
 
-function Characters({charList}) {
+function Characters() {
+  const [charList, setCharList] = useState();
+  async function loadCharacterList() {
+    const data = await getCharacterList();
+    setCharList(data);
+  }
+
+  useEffect(() => {
+    loadCharacterList();
+  }, []);
+  if (!charList) return 'Loading...';
   return (
   <div className='content'>
   <div className='item-list'>
