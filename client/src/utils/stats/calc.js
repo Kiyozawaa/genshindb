@@ -13,7 +13,6 @@ export function getAscension(level) {
 
 export function calcFinalStats(baseStats, statGrowth, level, ascensionStats, ascensionStat) {
   if (!baseStats || !statGrowth || !level || !ascensionStats) return null;
-  
   const ascension = ascensionStats[getAscension(level)] ?? {};
   const result = {};
 
@@ -21,7 +20,7 @@ export function calcFinalStats(baseStats, statGrowth, level, ascensionStats, asc
     const baseStat = baseStats[key] ?? null;
     if (!baseStat) continue;
     const multiplier = statGrowth[baseStat['growth_curve']][level];
-    result[prop] = baseStat.value * multiplier + (ascension[key] ?? 0);
+    result[prop] = baseStat.value * multiplier + (ascension['stats'][key] ?? 0);
   }
   
   result.ascension = formatAscensionStat(ascension, ascensionStat);
@@ -30,7 +29,7 @@ export function calcFinalStats(baseStats, statGrowth, level, ascensionStats, asc
 }
 
 function formatAscensionStat(ascension, stat) {
-  const rawValue = ascension[stat] ?? 0;
+  const rawValue = ascension['stats'][stat] ?? 0;
   const isFlatStat = isFlat(stat);
   return {
     stat: STAT_MAPPING[stat],
@@ -40,4 +39,15 @@ function formatAscensionStat(ascension, stat) {
 
 export function isFlat(stat) {
   return stat === 'FIGHT_PROP_ELEMENT_MASTERY';
+}
+
+export function ascensionUpgradeCost(ascensionStats, level) {
+  const maxAscension = getAscension(level);
+  let coinCost = 0;
+  for (let i=0; i<=maxAscension; i++) {
+   coinCost += ascensionStats[i].coinCost;
+  }
+  return {
+    coinCost
+  };
 }

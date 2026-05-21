@@ -19,7 +19,7 @@ export async function getCharacterList() {
 export async function getCharacter(id) {
   const details = await getCharacterDetails(id);
   const baseStats = await getCharacterBaseStats(id);
-  const ascensionStats = await getCharacterAscensionStats(id);
+  const ascension = await getCharacterAscensionStats(id);
   const statGrowth = await getCharacterStatGrowth(id);
   const passives = await getCharacterPassives(id);
   const constellations = await getConstellations(id);
@@ -27,7 +27,7 @@ export async function getCharacter(id) {
   return {
     ...details,
     baseStats,
-    ascensionStats,
+    ascension,
     statGrowth,
     talents,
     passives,
@@ -65,12 +65,28 @@ async function getCharacterBaseStats(characterId) {
 }
 
 async function getCharacterAscensionStats(characterId) {
-  const rows = await db.all('SELECT stat, value, ascension FROM character_ascension_stats WHERE character_id = ?', characterId);
-  const ascensionStats = rows.reduce((acc, row) => {
-    if (!acc[row.ascension]) acc[row.ascension] = {};
-    acc[row.ascension][row.stat] = row.value;
+  const statRows = await db.all('SELECT stat, value, ascension FROM character_ascension_stats WHERE character_id = ?', characterId);
+  const costRows = await db.all('SELECT ascension, costItems, unlockMaxLevel, requiredPlayerLevel, coinCost FROM character_upgrade_cost WHERE id = ?', characterId);
+  const ascensionStats = costRows.reduce((acc, row) => {
+    acc[row.ascension] = {
+      coinCost: row.coinCost,
+      costItems: JSON.parse(row.costItems),
+      requiredPlayerLevel: row.requiredPlayerLevel,
+      unlockMaxLevel: row.requiredPlayerLevel,
+      stats: {}
+    }
     return acc;
   }, {});
+  for (const row of statRows) {
+    if (ascensionStats[row.ascension]) {
+      ascensionStats[row.ascension].stats[row.stat] = row.value;
+    }
+  }
+  const ascensionStaats = statRows.reduce((acc, row) => {
+    if (!acc[row.ascension]) acc[row.ascension] = {};
+    acc[row.ascension][row.stat] = row.value;
+    return {...acc};
+  }, {...costRows});
   return ascensionStats;
 }
 

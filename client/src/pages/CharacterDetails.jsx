@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import NavBar from './../components/NavBar.jsx';
 import { getCharacter } from './../api.js';
-import { calcFinalStats } from './../utils/stats/calc.js';
+import { calcFinalStats, ascensionUpgradeCost } from './../utils/stats/calc.js';
 import { parseDescription, parseTalent } from './../utils/parseText.js';
 
 const iconURL = 'https://gi.yatta.moe/assets/UI/';
@@ -10,6 +10,7 @@ const iconURL = 'https://gi.yatta.moe/assets/UI/';
 function CharacterDetails() {
   const { id } = useParams();
   const [charData, setCharData] = useState(null);
+  const [level, setLevel] = useState(90);
   
   async function loadCharacterData() {
     const char = await getCharacter(id);
@@ -25,7 +26,8 @@ function CharacterDetails() {
   return (
     <div className='content'>
       <BasicInfo charData={charData} />
-      <BaseStats data={charData} />
+      <BaseStats data={charData} level={level} setLevel={setLevel} />
+      <CharacterAscensionCost data={charData.ascension} level={level}/>
       <Talents data={charData.talents} />
       <Passives data={charData.passives} />
       <Constellations data={charData.constellations} />
@@ -77,11 +79,9 @@ function BasicInfo({charData}) {
   );
 }
 
-function BaseStats({data}) {
-  const [level, setLevel] = useState(90);
+function BaseStats({data, level, setLevel}) {
+  const finalStats = calcFinalStats(data.baseStats, data.statGrowth, level, data.ascension, data.ascension_stat);
   const levels = [1, 10, 20, 30, 40, 50, 60, 70, 80, 90, 95, 100];
-  const finalStats = calcFinalStats(data.baseStats, data.statGrowth, level, data.ascensionStats, data.ascension_stat);
-  
   return (
     <>
       <h2 className='details-header'>Base Stats</h2>
@@ -114,6 +114,17 @@ function BaseStats({data}) {
       </div>
       </>
   );
+}
+
+function CharacterAscensionCost({data, level}) {
+  const cost = ascensionUpgradeCost(data, level);
+  
+  return (
+  <>
+  <h2 className='details-header'>Upgrade Cost</h2>
+  <div className='passive'>Cost: {cost.coinCost}</div>
+  </>
+  )
 }
 
 function  Talents({data}) {
