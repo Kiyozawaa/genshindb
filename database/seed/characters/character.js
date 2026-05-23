@@ -6,7 +6,7 @@ import constellations from './constellations.js';
 import upgradeCost from './upgradeCost.js';
 import db from './../../db.js';
 
-export async function seedCharacters(character) {
+export async function seedCharacters(character, itemId=null) {
   await characterDetails(db, character.data);
   await stats(db, character.data.upgrade, character.data.id);
   await characterVAs(db, character.data.fetter.cv, character.data.id);

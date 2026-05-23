@@ -54,7 +54,7 @@ export async function seedItems(itemList, exists, type='avatar', seeder) {
           console.log(`Fetching ${itemId}`);
           const item = await fetchWithRetry(`${API}/${type}/${itemId}`);
           if (!item) return;
-          await seeder(item);
+          await seeder(item, itemId);
         })
       );
       await sleep(300);
