@@ -1,6 +1,6 @@
 import { getWeaponList } from './../api.js';
 import { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router';
+import { Link } from 'react-router';
 import NavBar from './../components/NavBar.jsx';
 
 function Weapons() {

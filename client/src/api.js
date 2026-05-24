@@ -31,3 +31,9 @@ export async function getHome() {
   const res = await conn.json();
   return res;
 }
+
+export async function getAllMaterials() {
+  const conn = await fetch('http://localhost:8004/materials');
+  const res = await conn.json();
+  return res;
+}

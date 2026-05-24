@@ -3,6 +3,7 @@ import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 import { getCharacter, getCharacterList, homepage } from './../repo/characters.repo.js';
 import { getWeapon, getWeaponList } from './../repo/weapons.repo.js';
+import { getAllMaterials } from './../repo/materials.repo.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -35,4 +36,9 @@ router.get('/home', async (req, res) => {
   const [bdays, newChars] = await homepage();
   const data = { bdays, newChars };
   res.json(data);
+});
+
+router.get('/materials', async (req, res) => {
+  const materials = await getAllMaterials();
+  res.json(materials);
 });

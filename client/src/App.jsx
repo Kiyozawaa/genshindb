@@ -5,6 +5,7 @@ import Characters from './pages/Characters.jsx';
 import CharacterDetails from './pages/CharacterDetails.jsx';
 import Weapons from './pages/Weapons.jsx';
 import WeaponDetails from './pages/WeaponDetails.jsx';
+import Materials from './pages/Materials.jsx';
 
 export default function App() {
   return (
@@ -16,6 +17,7 @@ export default function App() {
         <Route path='/characters/:id' element={<CharacterDetails/>}/>
         <Route path='/weapons' element={<Weapons/>}/>
         <Route path='/weapon/:id' element={<WeaponDetails/>}/>
+        <Route path='/materials' element={<Materials/>}/>
       </Routes>
       
     </BrowserRouter>
