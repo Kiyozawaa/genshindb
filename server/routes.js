@@ -3,7 +3,7 @@ import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 import { getCharacter, getCharacterList, homepage } from './../repo/characters.repo.js';
 import { getWeapon, getWeaponList } from './../repo/weapons.repo.js';
-import { getAllMaterials } from './../repo/materials.repo.js';
+import { getMaterial, getAllMaterials } from './../repo/materials.repo.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -41,4 +41,10 @@ router.get('/home', async (req, res) => {
 router.get('/materials', async (req, res) => {
   const materials = await getAllMaterials();
   res.json(materials);
+});
+
+router.get('/material/:id', async (req, res) => {
+  const { id } = req.params;
+  const material = await getMaterial(id);
+  res.json(material);
 });

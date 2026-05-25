@@ -37,3 +37,9 @@ export async function getAllMaterials() {
   const res = await conn.json();
   return res;
 }
+
+export async function getMaterial(id) {
+  const conn = await fetch(`http://localhost:8004/material/${id}`);
+  const res = await conn.json();
+  return res;
+}
