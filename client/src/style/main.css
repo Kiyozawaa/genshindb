@@ -315,6 +315,7 @@ body {
 
 .material-stat-label.source {
   text-transform: capitalize;
+  font-size: 12px;
 }
 .material-stat-value {
   color: var(--color):

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import { getMaterial } from './../api.js';
 import { Link } from 'react-router';
-
+import { parseDescription } from './../utils/parseText.js';
 export default function MaterialDetails() {
   const [mat, setMat] = useState(null);
   const { id } = useParams();
@@ -28,8 +28,12 @@ export default function MaterialDetails() {
           <div className='material-stat-label'>Rarity</div>
           <div className='material-stat-value'>{mat.rank}</div>
         </div>
+        <div className='material-stat'>
+          <div className='material-stat-label'>Type</div>
+          <div className='material-stat-value'>{mat.type}</div>
+        </div>
       </div>
-      <div className='description'>{mat.description}</div>
+      <div className='description' dangerouslySetInnerHTML={{ __html: parseDescription(mat.description)}}/>
       <Source data={mat.source}/>
       <RequiredBy data={mat.additions.requiredBy}/>
     </div>
@@ -38,6 +42,7 @@ export default function MaterialDetails() {
 
 function Source({data}) {
   if (!data) return;
+  data = data.filter(d => !d.name.startsWith('Placeholder')); //Removes in-game 'Craftable Amount' option
   return (<>
     <div className='details-header'>Source</div>
       {data.map(s => (
