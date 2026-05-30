@@ -16,7 +16,7 @@ body {
 
 .item-list {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(4, 0fr);
   border-radius: 8px;
 }
 
@@ -83,7 +83,6 @@ body {
 .description {
   grid-column: 1/-1;
   background: var(--bg);
-  
   text-align: center;
   padding: 10px;
   font-size: 15px;
@@ -320,4 +319,15 @@ body {
 .material-stat-value {
   color: var(--color):
   flex: 1;
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.icon.mini {
+  background: none;
+  width: 16px;
+  height: 16px;
 }

@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router';
+import { Link, useParams } from 'react-router';
 import NavBar from './../components/NavBar.jsx';
-import { getCharacter } from './../api.js';
-import { calcFinalStats, ascensionUpgradeCost } from './../utils/stats/calc.js';
+import { getCharacter, getMaterial } from './../api.js';
+import { calcFinalStats, ascensionUpgradeCost, getAscension } from './../utils/stats/calc.js';
 import { parseDescription, parseTalent } from './../utils/parseText.js';
 
 const iconURL = 'https://gi.yatta.moe/assets/UI/';
@@ -117,14 +117,28 @@ function BaseStats({data, level, setLevel}) {
 }
 
 function CharacterAscensionCost({data, level}) {
-  const cost = ascensionUpgradeCost(data, level);
-  
-  return (
-  <>
-  <h2 className='details-header'>Upgrade Cost</h2>
-  <div className='passive'>Cost: {cost.coinCost}</div>
-  </>
-  )
+  const cost = data[getAscension(level)] ?? null;
+  if (!cost.coinCost) return <div className='passive'><center>No items needed to upgrade</center></div>
+
+  return (<>
+    <div className='passive'>
+    <div className='item-list'>
+    {Object.entries(cost.costItems).map(([id, value]) => (
+    <Link class='a' to={`/material/${id}`}>
+      <div className='item-card'>
+        <img className='icon' src={iconURL+'UI_ItemIcon_'+id+'.png'}/>
+        <div className='item-name'>{value}</div>
+      </div>
+      </Link>
+    ))}
+    </div>
+    <div className='center'>
+      Required:
+      <img className='icon mini' src={iconURL+'UI_ItemIcon_202.png'}/>
+      {cost.coinCost}
+      </div>
+    </div>
+  </>)
 }
 
 function  Talents({data}) {
