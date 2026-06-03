@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router';
 import NavBar from './../components/NavBar.jsx';
 import { getCharacter, getMaterial } from './../api.js';
-import { calcFinalStats, ascensionUpgradeCost, getAscension } from './../utils/stats/calc.js';
+import { calcFinalStats, getAscension } from './../utils/stats/calc.js';
 import { parseDescription, parseTalent } from './../utils/parseText.js';
 
 const iconURL = 'https://gi.yatta.moe/assets/UI/';
@@ -125,9 +125,9 @@ function CharacterAscensionCost({data, level}) {
     <div className='item-list'>
     {Object.entries(cost.costItems).map(([id, value]) => (
     <Link class='a' to={`/material/${id}`}>
-      <div className='item-card'>
-        <img className='icon' src={iconURL+'UI_ItemIcon_'+id+'.png'}/>
-        <div className='item-name'>{value}</div>
+      <div className='item-card small'>
+        <img className='icon small' src={iconURL+'UI_ItemIcon_'+id+'.png'}/>
+        <div className='item-name small'>{value}</div>
       </div>
       </Link>
     ))}

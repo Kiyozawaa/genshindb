@@ -40,26 +40,3 @@ function formatAscensionStat(ascension, stat) {
 export function isFlat(stat) {
   return stat === 'FIGHT_PROP_ELEMENT_MASTERY';
 }
-
-export function ascensionUpgradeCost(ascensionStats, level) {
-  const maxAscension = getAscension(level);
-  let coinCost = 0;
-  let costItems = {};
-  for (let i=0; i<=maxAscension; i++) {
-   coinCost += ascensionStats[i].coinCost;
-   const currCostItems = ascensionStats[i].costItems;
-   if (!currCostItems) {
-     continue;
-   } else {
-     for (const [itemId, count] of Object.entries(currCostItems)) {
-       if (!itemId) continue;
-       if (!costItems[itemId]) costItems[itemId] = 0;
-       costItems[itemId] += Number(count);
-     }
-   }
-  }
-  return {
-    coinCost,
-    costItems
-  };
-}

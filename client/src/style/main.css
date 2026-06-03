@@ -16,8 +16,9 @@ body {
 
 .item-list {
   display: grid;
-  grid-template-columns: repeat(4, 0fr);
+  grid-template-columns: repeat(4, auto);
   border-radius: 8px;
+  justify-content: center;
 }
 
 .item-card {
@@ -28,6 +29,11 @@ body {
   border-radius: 6px;
 }
 
+.item-card.small {
+  padding: 0;
+  margin: 25px;
+}
+
 .item-name {
   background: #e3e3e3;
   border-radius: 0 0 8px 8px;
@@ -35,11 +41,25 @@ body {
   font-size: 11px;
 }
 
+.item-name.small {
+  font-size: 10px;
+}
 .icon {
   background: var(--card);
   border-radius: 8px 8px 0 0;
   width: 104px;
   height: 104px;
+}
+
+.icon.small {
+  width: 64px;
+  height: 64px;
+}
+
+.icon.mini {
+  background: none;
+  width: 16px;
+  height: 16px;
 }
 
 .a {
@@ -325,9 +345,4 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-}
-.icon.mini {
-  background: none;
-  width: 16px;
-  height: 16px;
 }

@@ -5,6 +5,7 @@ import { seedCharacters } from './characters/character.js';
 import { seedWeapons } from './weapons/weapon.js';
 import { getItemListFromAPI, itemExists, seedItems} from './utils.js';
 import { statGrowth } from './characters/stats.js';
+import characterProfile from './characters/profile.js';
 import weaponStatGrowth from './weapons/statGrowth.js';
 import weaponAscensionGrowth from  './weapons/ascension.js';
 import seedMaterials from './materials/material.js';
@@ -29,6 +30,10 @@ export async function seeder() {
     const charExists = await itemExists(db, 'characters');
     await seedItems(charIdList, charExists, 'avatar', seedCharacters);
     
+  const charStoryIdList = [...new Set(charIdList.map(c => (c.replace(/-[a-z]{1,10}/, ''))))];
+  const charStoryIdExists = await itemExists(db, 'character_stories');
+  await seedItems(charStoryIdList, charStoryIdExists, 'avatarFetter', characterProfile);
+  
     console.log('Fetching weapon id list.');
     const wepIdList = await getItemListFromAPI(`${API}/weapon`);
     const wepExists = await itemExists(db, 'weapons');

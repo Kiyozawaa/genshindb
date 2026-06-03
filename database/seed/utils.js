@@ -44,7 +44,6 @@ export async function seedItems(itemList, exists, type='avatar', seeder) {
   const BATCH_SIZE = 3;
     for (let i = 0; i < itemList.length; i+=BATCH_SIZE) {
       const batch = itemList.slice(i, i+BATCH_SIZE);
-      
       await Promise.all(
         batch.map(async (itemId) => {
           if (exists.has(itemId)) {
