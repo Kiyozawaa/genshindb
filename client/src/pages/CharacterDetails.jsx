@@ -31,6 +31,8 @@ function CharacterDetails() {
       <Talents data={charData.talents} />
       <Passives data={charData.passives} />
       <Constellations data={charData.constellations} />
+      <Story data={charData.story} />
+      <Quotes data={charData.quotes} />
       <NavBar/>
     </div>
   );
@@ -230,4 +232,39 @@ function Constellations({data}) {
     </>
   );
 }
+
+function Story({data}) {
+  if (!data) return;
+  return (<>
+    <h2 className='details-header'>Profile</h2>
+    <div className='passive'>
+    {data.map(story => (
+    <div key={story.sid}>
+      <div className='skill-name'><h3>{story.title}</h3></div>
+      <div className='skill-name'><h3>{story.title2}</h3></div>
+      {story.tips && <div className='unlock-requirement'>{story.tips}</div>}
+      <p dangerouslySetInnerHTML={{ __html: parseDescription(story.text)}}/>
+      {story.text2 && <p dangerouslySetInnerHTML={{ __html: parseDescription(story.text2)}}/>}
+    </div>
+    ))}
+    </div>
+  </>)
+}
+
+function Quotes({data}) {
+  if (!data) return;
+  return (<>
+    <div className='details-header'>Quotes</div>
+    <div className='passive'>
+      {data.map(quote => (
+      <div key={quote.sid}>
+        <div className='skill-name'><h3>{quote.title}</h3></div>
+        {quote.tips && <div className='unlock-requirement'>{quote.tips}</div>}
+        <p dangerouslySetInnerHTML={{ __html: parseDescription(quote.text)}}/>
+      </div>
+      ))}
+    </div>
+  </>)
+}
+
 export default CharacterDetails;

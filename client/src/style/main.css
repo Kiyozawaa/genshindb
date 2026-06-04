@@ -346,3 +346,9 @@ body {
   justify-content: center;
   align-items: center;
 }
+
+.unlock-requirement {
+  background: var(--bg);
+  border: 1px solid #fff;
+  padding: 5px;
+}

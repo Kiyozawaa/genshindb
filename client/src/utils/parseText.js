@@ -13,7 +13,8 @@ export function parseDescription(data) {
     //Some characters like Lisa use the layout below in their kit
     .replace(/\{LAYOUT_MOBILE#Tap\}\{LAYOUT_PC#Press\}\{LAYOUT_PS#Press\}/g, 'Press')
     .replace(/#\{LAYOUT_MOBILE#Tapping\}\{LAYOUT_PC#Press\}\{LAYOUT_PS#Press\}/g, 'Press')
-    .replace(/^#/, '');
+    .replace(/^#/, '')
+    .replace(/{NICKNAME}/g, 'Traveler'); //Defualt Player Name
   return parsed;
 }
 

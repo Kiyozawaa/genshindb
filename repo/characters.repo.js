@@ -17,6 +17,7 @@ export async function getCharacterList() {
 }
 
 export async function getCharacter(id) {
+  if (!id) return;
   const details = await getCharacterDetails(id);
   const baseStats = await getCharacterBaseStats(id);
   const ascension = await getCharacterAscensionStats(id);
@@ -24,6 +25,7 @@ export async function getCharacter(id) {
   const passives = await getCharacterPassives(id);
   const constellations = await getConstellations(id);
   const talents = await getTalents(id);
+  const profile = await getProfile(id);
   return {
     ...details,
     baseStats,
@@ -31,7 +33,8 @@ export async function getCharacter(id) {
     statGrowth,
     talents,
     passives,
-    constellations
+    constellations,
+    ...profile
   };
 }
 
@@ -193,4 +196,15 @@ export async function homepage() {
   const upcoming = await getUpcomingBirthdays();
   const newCharacters = await getNewReleases();
   return [upcoming, newCharacters];
+}
+
+async function getProfile(id) {
+  const pid = id.replace(/-[a-z]{1,10}/, '');
+  const story = await db.all('SELECT * FROM character_stories WHERE id = ?', pid);
+  const quotesRows = await db.all('SELECT * FROM character_quotes WHERE id = ?', pid);
+  const quotes = quotesRows.map(q => ({
+    ...q,
+    tasks: JSON.parse(q.tasks)
+  }));
+  return { story, quotes };
 }
