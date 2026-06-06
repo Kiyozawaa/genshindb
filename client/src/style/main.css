@@ -352,3 +352,51 @@ body {
   border: 1px solid #fff;
   padding: 5px;
 }
+
+.artifact-page-title {
+  font-size: 25px;
+  font-weight: 600;
+}
+
+.artifact-page-icon {
+  display: flex;
+  justify-content: center;
+}
+
+.artifact-page-icon img {
+  width: 128px;
+  height: 128px;
+}
+
+.artifact-page-details {
+  border: 1px solid #fff;
+  border-radius: 8px;
+  background: var(--card);
+  padding: 5px;
+}
+
+.artifact-page-details p {
+  font-size: 14px;
+}
+
+.artifact-page-details h3 {
+  text-align: center;
+  margin: 3px;
+}
+
+.artifact-page-pieces {
+  display: flex;
+  justify-content: center;
+}
+
+.artifact-page-pieces__icon {
+  width: 48px;
+  height: 48px;
+  margin: 5px;
+}
+
+.artifact-page-pieces__icon.active {
+  background: var(--card);
+  border: 1px solid #fff;
+  border-radius: 5px;
+}

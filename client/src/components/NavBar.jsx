@@ -8,7 +8,7 @@ export default function NavBar() {
       <Link className='navbar-item' to={'/characters'}>Characters</Link>
       <Link className='navbar-item' to={'/weapons'}>Weapons</Link>
       <Link className='navbar-item' to='/materials'>Materials</Link>
-      <Link className='navbar-item' to='/'>Menu</Link>
+      <Link className='navbar-item' to='/artifacts'>Artifacts</Link>
     </div>
   </>
   );

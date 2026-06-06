@@ -7,6 +7,8 @@ import Weapons from './pages/Weapons.jsx';
 import WeaponDetails from './pages/WeaponDetails.jsx';
 import Materials from './pages/Materials.jsx';
 import MaterialDetails from './pages/MaterialDetails.jsx';
+import Artifacts from './pages/Artifacts.jsx';
+import ArtifactDetails from './pages/ArtifactDetails.jsx';
 
 export default function App() {
   return (
@@ -20,6 +22,8 @@ export default function App() {
         <Route path='/weapon/:id' element={<WeaponDetails/>}/>
         <Route path='/materials' element={<Materials/>}/>
         <Route path='/material/:id' element={<MaterialDetails/>}/>
+        <Route path='/artifacts' element={<Artifacts/>}/>
+        <Route path='artifact/:id' element={<ArtifactDetails/>}/>
       </Routes>
       
     </BrowserRouter>
