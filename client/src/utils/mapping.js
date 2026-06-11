@@ -15,7 +15,7 @@ export const STAT_MAPPING = {
   'FIGHT_PROP_FIRE_ADD_HURT': 'pyro dmg bonus',
   'FIGHT_PROP_WATER_ADD_HURT': 'hydro dmg bonus',
   'FIGHT_PROP_ICE_ADD_HURT': 'cryo dmg bonus ',
-  'FIGHT_PROP_ELECTRIC_ADD_HURT': 'electro dmg bonus',
+  'FIGHT_PROP_ELEC_ADD_HURT': 'electro dmg bonus',
   'FIGHT_PROP_PHYSICAL_ADD_HURT': 'physical dmg bonus'
 }
 
