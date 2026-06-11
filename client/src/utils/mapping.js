@@ -29,6 +29,16 @@ export const ELEMENT_MAPPING = {
   'Rock': 'Geo'
 }
 
+export const REV_ELEMENT_MAPPING = {
+  'Pyro': 'Fire',
+  'Hydro': 'Water',
+  'Dendro': 'Grass',
+  'Electro': 'Electric',
+  'Cryo': 'Ice',
+  'Anemo': 'Wind',
+  'Geo': 'Rock'
+}
+
 export const WEAPON_MAPPING = {
   'WEAPON_SWORD_ONE_HAND': 'Sword',
   'WEAPON_CLAYMORE': 'Claymore',

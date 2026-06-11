@@ -5,6 +5,7 @@ import { getWeapon } from './../api.js';
 import { STAT_MAPPING } from './../utils/mapping.js';
 import { calcBaseStat, calcSecondaryStat } from './../utils/stats/calcWep.js';
 import { parseDescription } from './../utils/parseText.js';
+
 function WeaponDetails() {
   const { id } = useParams();
   const [weapon, setWeapon] = useState(null);

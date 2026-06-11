@@ -1,12 +1,14 @@
+const API = 'http://localhost:8004';
+
 export async function getCharacterList() {
-  const conn = await fetch('http://localhost:8004/characters');
+  const conn = await fetch(`${API}/characters`);
   const res = await conn.json(); 
   return res;
 }
 
 export async function getCharacter(id) {
   try {
-  const conn = await fetch(`http://localhost:8004/character/${id}`);
+  const conn = await fetch(`${API}/characters/${id}`);
   const res = await conn.json();
   return res;
   } catch (e) {
@@ -15,43 +17,43 @@ export async function getCharacter(id) {
 }
 
 export async function getWeaponList() {
-  const conn = await fetch('http://localhost:8004/weapons');
+  const conn = await fetch(`${API}/weapons`);
   const res = await conn.json();
   return res;
 }
 
 export async function getWeapon(id) {
-  const conn = await fetch(`http://localhost:8004/weapon/${id}`);
+  const conn = await fetch(`${API}/weapons/${id}`);
   const res = await conn.json();
   return res;
 }
 
 export async function getHome() {
-  const conn = await fetch('http://localhost:8004/home');
+  const conn = await fetch(`${API}/home`);
   const res = await conn.json();
   return res;
 }
 
 export async function getAllMaterials() {
-  const conn = await fetch('http://localhost:8004/materials');
+  const conn = await fetch(`${API}/materials`);
   const res = await conn.json();
   return res;
 }
 
 export async function getMaterial(id) {
-  const conn = await fetch(`http://localhost:8004/material/${id}`);
+  const conn = await fetch(`${API}/materials/${id}`);
   const res = await conn.json();
   return res;
 }
 
 export async function getAllArtifacts() {
-  const conn = await fetch('http://localhost:8004/artifacts');
+  const conn = await fetch(`${API}/artifacts`);
   const res = await conn.json();
   return res;
 }
 
 export async function getArtifact(id) {
-  const conn = await fetch(`http://localhost:8004/artifact/${id}`);
+  const conn = await fetch(`${API}/artifacts/${id}`);
   const res = await conn.json();
   return res;
 }

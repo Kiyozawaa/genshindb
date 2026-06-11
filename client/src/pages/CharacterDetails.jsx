@@ -1,17 +1,19 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router';
-import NavBar from './../components/NavBar.jsx';
+import BackButton from './../components/BackButton.jsx';
 import { getCharacter, getMaterial } from './../api.js';
 import { calcFinalStats, getAscension } from './../utils/stats/calc.js';
 import { parseDescription, parseTalent } from './../utils/parseText.js';
+import { REV_ELEMENT_MAPPING } from './../utils/mapping.js';
+import './../style/characters.css';
 
-const iconURL = 'https://gi.yatta.moe/assets/UI/';
+const assetURL = 'https://gi.yatta.moe/assets/UI/';
 
 function CharacterDetails() {
   const { id } = useParams();
   const [charData, setCharData] = useState(null);
   const [level, setLevel] = useState(90);
-  
+  const [active, setActive] = useState('Profile');
   async function loadCharacterData() {
     const char = await getCharacter(id);
     setCharData(char);
@@ -25,60 +27,72 @@ function CharacterDetails() {
   
   return (
     <div className='content'>
-      <BasicInfo charData={charData} />
-      <BaseStats data={charData} level={level} setLevel={setLevel} />
-      <CharacterAscensionCost data={charData.ascension} level={level}/>
-      <Talents data={charData.talents} />
-      <Passives data={charData.passives} />
-      <Constellations data={charData.constellations} />
-      <Story data={charData.story} />
-      <Quotes data={charData.quotes} />
-      <NavBar/>
+      <BackButton to='/characters' value='Characters'/>
+      <CharacterCard char={charData}/>
+      <CharacterNavBar active={active} setActive={setActive}/>
+      
+      {active === 'Profile' &&
+      <>
+        <BaseStats data={charData} level={level} setLevel={setLevel} />
+        <CharacterAscensionCost data={charData.ascension} level={level}/>
+      </>}
+      
+      {active === 'Talents' &&
+      <Talents data={charData.talents}/>}
+      
+      {active === 'Passives' &&
+      <Passives data={charData.passives}/>}
+      
+      {active === 'Constellations' &&
+      <Constellations data={charData.constellations}/>}
+      
+      {active === 'Stories' && 
+      <Story data={charData.story}/>}
+      
+      {active === 'Dialogues' &&
+      <Quotes data={charData.quotes}/>}
+
     </div>
   );
 }
 
-function BasicInfo({charData}) {
+function CharacterCard({char}) {
+  const avatarIcon = char.icon.replace(/UI_AvatarIcon_/, 'UI_Gacha_AvatarImg_');
+  const elementIcon = 'UI_Buff_Element_' + REV_ELEMENT_MAPPING[char.element];
+  const weaponIcon = ('UI_GachaTypeIcon_' + char.weapon).replace(/Polearm/, 'Pole');
   return (
-    <>
-      <h2 className='details-header'>Profile</h2>
-    <div className='character-info'>
-      <div className='stat'>
-        <div className='stat-label'>Name</div>
-        <div className='stat-value'>{charData.name}</div>
-      </div>
-      <div className='stat'>
-        <div className='stat-label'>Element</div>
-        <div className='stat-value'>{charData.element}</div>
-      </div>
-      <div className='stat'>
-        <div className='stat-label'>Source</div>
-        <div className='stat-value'>{charData.source}</div>
-      </div>
-      <div className='stat'>
-        <div className='stat-label'>Weapon</div>
-        <div className='stat-value'>{charData.weapon}</div>
-      </div>
-      <div className='stat'>
-        <div className='stat-label'>Rarity</div>
-        <div className='stat-value'>{charData.rarity}</div>
-      </div>
-      <div className='stat'>
-        <div className='stat-label'>Birthday</div>
-        <div className='stat-value'>{charData.birth}</div>
-      </div>
-      <div className='stat'>
-        <div className='stat-label'>Constellation</div>
-        <div className='stat-value'>{charData.constellation}</div>
-      </div>
-      <div className='stat'>
-        <div className='stat-label'>Native</div>
-        <div className='stat-value'>{charData.native}</div>
-      </div>
-        <div className='description'>{charData.description}</div>
+  <div className='character-card'>
+    <img className='character-card__avatar' src={assetURL+avatarIcon+'.png'}/>
+    <div className='character-card__name'>
+      <img className='character-card__icon' src={assetURL+elementIcon+'.png'}/>
+      {char.name}
     </div>
-    </>
-  );
+    <div className='character-card__rarity'>
+      {'★'.repeat(char.rarity)}
+    </div>
+    <div className='character-card__weapon'>
+      <img className='character-card__icon' src={assetURL+weaponIcon+'.png'}/>
+      {char.weapon}
+    </div>
+  </div>
+  )
+}
+
+function CharacterNavBar({active, setActive}) {
+  const navbarItems = ['Profile', 'Talents', 'Passives', 'Constellations', 'Stories', 'Dialogues'];
+  return (<>
+    <div className='character-navbar'>
+      {navbarItems.map(item => (
+      <div
+      key={item}
+      className={`character-navbar__item ${active === item ? 'character-navbar__item--active' : ''}`}
+      onClick={(e => setActive(item))}
+      >
+        {item}
+      </div>
+      ))}
+    </div>
+  </>)
 }
 
 function BaseStats({data, level, setLevel}) {
@@ -86,23 +100,35 @@ function BaseStats({data, level, setLevel}) {
   const levels = [1, 10, 20, 30, 40, 50, 60, 70, 80, 90, 95, 100];
   return (
     <>
-      <h2 className='details-header'>Base Stats</h2>
     <div className='character-info'>
-      <div className='stat'>
-        <div className='stat-label'>HP</div>
-        <div className='stat-value'>{Math.round(finalStats.hp)}</div>
+    <div className='character__description'>{data.description}</div>
+      <div className='character-stat'>
+        <div className='character-stat__label'>HP</div>
+        <div className='character-stat__value'>{Math.round(finalStats.hp)}</div>
       </div>
-      <div className='stat'>
-        <div className='stat-label'>Attack</div>
-        <div className='stat-value'>{Math.round(finalStats.atk)}</div>
+      <div className='character-stat'>
+        <div className='character-stat__label'>Attack</div>
+        <div className='character-stat__value'>{Math.round(finalStats.atk)}</div>
       </div>
-      <div className='stat'>
-        <div className='stat-label'>Defense</div>
-        <div className='stat-value'>{Math.round(finalStats.def)}</div>
+      <div className='character-stat'>
+        <div className='character-stat__label'>Defense</div>
+        <div className='character-stat__value'>{Math.round(finalStats.def)}</div>
       </div>
-      <div className='stat'>
-        <div className='stat-label'>{finalStats.ascension.stat}</div>
-        <div className='stat-value'>{(finalStats.ascension.value).toFixed(1) ?? 0}</div>
+      <div className='character-stat'>
+        <div className='character-stat__label'>{finalStats.ascension.stat}</div>
+        <div className='character-stat__value'>{(finalStats.ascension.value).toFixed(1) ?? 0}</div>
+      </div>
+      <div className='character-stat'>
+        <div className='character-stat__label'>Birthday</div>
+        <div className='character-stat__value'>{data.birth}</div>
+      </div>
+      <div className='character-stat'>
+        <div className='character-stat__label'>Constellation</div>
+        <div className='character-stat__value'>{data.constellation}</div>
+      </div>
+      <div className='character-stat'>
+        <div className='character-stat__label'>Native</div>
+        <div className='character-stat__value'>{data.native}</div>
       </div>
     </div>
     <div className='level-slider'>
@@ -119,16 +145,16 @@ function BaseStats({data, level, setLevel}) {
 }
 
 function CharacterAscensionCost({data, level}) {
-  const cost = data[getAscension(level)] ?? null;
-  if (!cost.coinCost) return <div className='passive'><center>No items needed to upgrade</center></div>
+  const cost = data[getAscension(level)] || null;
+  if (!cost.coinCost) return <div className='character-section'><center>No items needed to upgrade</center></div>
 
   return (<>
-    <div className='passive'>
+    <div className='character-section'>
     <div className='item-list'>
     {Object.entries(cost.costItems).map(([id, value]) => (
-    <Link class='a' to={`/material/${id}`}>
+    <Link key={id} className='a' to={`/material/${id}`}>
       <div className='item-card small'>
-        <img className='icon small' src={iconURL+'UI_ItemIcon_'+id+'.png'}/>
+        <img className='icon small' src={assetURL+'UI_ItemIcon_'+id+'.png'}/>
         <div className='item-name small'>{value}</div>
       </div>
       </Link>
@@ -136,7 +162,7 @@ function CharacterAscensionCost({data, level}) {
     </div>
     <div className='center'>
       Required:
-      <img className='icon mini' src={iconURL+'UI_ItemIcon_202.png'}/>
+      <img className='icon mini' src={assetURL+'UI_ItemIcon_202.png'}/>
       {cost.coinCost}
       </div>
     </div>
@@ -146,15 +172,14 @@ function CharacterAscensionCost({data, level}) {
 function  Talents({data}) {
   return (
     <>
-      <h2 className='details-header'>Talents</h2>
       {data.map(t => (
-      <div className='passive'
+      <div className='character-section'
       key={t.id}>
-      <div className='skill-name'>
-        <img className='skill-icon' src={iconURL+t.icon+'.png'}/>
-        <h3>{t.name}</h3>
+      <div className='skill__name'>
+        <img className='skill__icon' src={assetURL+t.icon+'.png'}/>
+        <div className='character-section__title'>{t.name}</div>
       </div>
-      <p dangerouslySetInnerHTML={{ __html : parseDescription(t.description)}} />
+      <div className='character-section__text' dangerouslySetInnerHTML={{ __html : parseDescription(t.description)}} />
       <TalentScaling data={t.promote}/>
       </div>
       ))}
@@ -181,22 +206,22 @@ function TalentScaling({data}) {
         <input type='range' value={level} onChange={e => setLevel(e.target.value)} min={1} max={15}/>
         </>}
       </div>
-      <div className='talent-scaling'>
-      {Object.entries(parsed).map(([k, v]) => (
+      {Object.entries(parsed).map(([hit, value]) => (
       <>
+      <div className='talent-scaling'>
         <div
-        key={k + 'name'}
-        className='talent-scaling-name'>
-          {k}
+        key={hit + 'name'}
+        className='talent-scaling__name'>
+          {hit}
         </div>
         <div
-        key={k + 'value'}
-        className='talent-scaling-value'>
-          {v}
+        key={hit + 'value'}
+        className='talent-scaling__value'>
+          {value}
         </div>
+      </div>
       </>
       ))}
-      </div>
     </>
   );
 }
@@ -204,14 +229,13 @@ function TalentScaling({data}) {
 function Passives({data}) {
   return (
     <>
-    <h2 className='details-header'>Passives</h2>
-    {data.map(p => (
-    <div className='passive' key={p.id}>
-      <div className='skill-name'>
-      <img className='skill-icon' src={iconURL+p.icon+'.png'}/>
-      <h3>{p.name}</h3>
+    {data.map(passive => (
+    <div className='character-section' key={passive.id}>
+      <div className='skill__name'>
+      <img className='skill__icon' src={assetURL+passive.icon+'.png'}/>
+      <div className='character-section__title'>{passive.name}</div>
       </div>
-      <p dangerouslySetInnerHTML={{ __html : parseDescription(p.description)}} />
+      <div className='character-section__text' dangerouslySetInnerHTML={{ __html : parseDescription(passive.description)}} />
     </div>
     ))}
     </>
@@ -221,12 +245,11 @@ function Passives({data}) {
 function Constellations({data}) {
   return (
     <>
-      <h2 className='details-header'>Constellations</h2>
-      {data.map((c, i) => (
-      <div className='passive'
-      key={c.id}>
-        <h3>{i+1}. {c.name}</h3>
-        <p dangerouslySetInnerHTML={{ __html: parseDescription(c.description)}}/>
+      {data.map((constellation, i) => (
+      <div className='character-section'
+      key={constellation.id}>
+        <div className='character-section__title'>{i+1}. {constellation.name}</div>
+        <div className='character-section__text' dangerouslySetInnerHTML={{ __html: parseDescription(constellation.description)}}/>
       </div>
       ))}
     </>
@@ -234,17 +257,20 @@ function Constellations({data}) {
 }
 
 function Story({data}) {
-  if (!data) return;
+  if (!data?.length) return null;
   return (<>
-    <h2 className='details-header'>Profile</h2>
-    <div className='passive'>
+    <div className='character-profile'>
     {data.map(story => (
     <div key={story.sid}>
-      <div className='skill-name'><h3>{story.title}</h3></div>
-      <div className='skill-name'><h3>{story.title2}</h3></div>
-      {story.tips && <div className='unlock-requirement'>{story.tips}</div>}
-      <p dangerouslySetInnerHTML={{ __html: parseDescription(story.text)}}/>
-      {story.text2 && <p dangerouslySetInnerHTML={{ __html: parseDescription(story.text2)}}/>}
+      <h2 className='character-profile__header'>
+        {story.title}
+      </h2>
+
+      {story.tips &&
+      <p className='character-profile__requirement'>
+      {story.tips}
+      </p>}
+      <div className='character-profile__text' dangerouslySetInnerHTML={{ __html: parseDescription(story.text)}}/>
     </div>
     ))}
     </div>
@@ -252,15 +278,16 @@ function Story({data}) {
 }
 
 function Quotes({data}) {
-  if (!data) return;
+  if (!data?.length) return null;
   return (<>
-    <div className='details-header'>Quotes</div>
-    <div className='passive'>
+    <div className='character-profile'>
       {data.map(quote => (
       <div key={quote.sid}>
-        <div className='skill-name'><h3>{quote.title}</h3></div>
-        {quote.tips && <div className='unlock-requirement'>{quote.tips}</div>}
-        <p dangerouslySetInnerHTML={{ __html: parseDescription(quote.text)}}/>
+        <h3 className='character-profile__header'>
+          {quote.title}
+        </h3>
+        {quote.tips && <p className='character-profile__requirement'>{quote.tips}</p>}
+        <div className='character-profile__text' dangerouslySetInnerHTML={{ __html: parseDescription(quote.text)}}/>
       </div>
       ))}
     </div>
