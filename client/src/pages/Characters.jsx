@@ -3,12 +3,17 @@ import { useEffect, useState } from 'react';
 import BackButton from './../components/BackButton.jsx';
 import NavBar from './../components/NavBar.jsx';
 import { getCharacterList } from './../api.js';
-import { ELEMENT_MAPPING } from './../utils/mapping.js';
+import { ELEMENT_MAPPING, WEAPON_MAPPING } from './../utils/mapping.js';
 
 function Characters() {
   const [charList, setCharList] = useState(null);
   const [query, setQuery] = useState('');
-  const [filters, setFilters] = useState({elements: [], rarities: []});
+  const [filters, setFilters] = useState({
+    elements: [],
+    rarities: [],
+    weapons: []
+  });
+  
   async function loadCharacterList() {
     const data = await getCharacterList();
     setCharList(data);
@@ -30,6 +35,10 @@ function Characters() {
   
   if (filters.elements.length) {
     result = result.filter(char => filters.elements.includes(char.element));
+  }
+  
+  if (filters.weapons.length) {
+    result = result.filter(char => filters.weapons.includes(WEAPON_MAPPING[char.weapon]))
   }
   
   if (!charList) return 'Loading...';
@@ -58,7 +67,8 @@ function Characters() {
 function SearchBar({setQuery, filters, setFilters}) {
   const [modal, setModal] = useState(false);
   const elements = ['Ice', 'Fire', 'Grass', 'Rock', 'Water', 'Electric', 'Wind'];
-  const totalFilters = filters.elements.length + filters.rarities.length;
+  const weapons = ['Sword', 'Polearm', 'Catalyst', 'Bow', 'Claymore']
+  const totalFilters = filters.elements.length + filters.rarities.length + filters.weapons.length;
   
   function toggleRarity(rarity) {
     setFilters(prev => ({
@@ -78,10 +88,20 @@ function SearchBar({setQuery, filters, setFilters}) {
     }));
   }
   
+  function toggleWeapon(weapon) {
+    setFilters(prev => ({
+      ...prev,
+      weapons: prev.weapons.includes(weapon)
+      ? prev.weapons.filter(w => w !== weapon)
+      : [...prev.weapons, weapon]
+    }));
+  }
+  
   function resetFilter() {
     setFilters({
       elements: [],
-      rarities: []
+      rarities: [],
+      weapons: []
     });
   }
   
@@ -93,7 +113,7 @@ function SearchBar({setQuery, filters, setFilters}) {
         onChange={e => setQuery(e.target.value)}
       />
       <button className='search__button' onClick={e => setModal(!modal)}>
-        Filter
+        Filters &nbsp;
         {totalFilters > 0 && <>({totalFilters})</>}
         </button>
       <div
@@ -106,8 +126,9 @@ function SearchBar({setQuery, filters, setFilters}) {
           <div className='filter-modal__item-list'>
             <div
               className={`filter-modal__item
+                rarity
                 ${filters.rarities.includes(4)
-                ? 'is-selected-rarity'
+                ? 'is-selected'
                 : ''}`
               }
               onClick={e => toggleRarity(4)}
@@ -117,8 +138,9 @@ function SearchBar({setQuery, filters, setFilters}) {
             
             <div
               className={`filter-modal__item
+                rarity
                 ${filters.rarities.includes(5)
-                  ? 'is-selected-rarity' : ''
+                  ? 'is-selected' : ''
                 }`
               }
               onClick={e => toggleRarity(5)}
@@ -140,11 +162,28 @@ function SearchBar({setQuery, filters, setFilters}) {
           </div>
           ))}
           </div>
-          <button
-            className='filter-modal__clear-filters'
-            onClick={e => resetFilter()}>
-            Clear Filter(s)
-          </button>
+          
+          <h2 className='filter-modal__title'>Weapons</h2>
+          <div className='filter-modal__item-list'>
+            {weapons.map(weapon => (
+            <div
+              key={weapon}
+              className={`filter-modal__item
+                weapon
+                ${filters.weapons.includes(weapon) ? 'is-selected' : ''}`
+              }
+              onClick={e => toggleWeapon(weapon)}>
+              {weapon}
+            </div>
+            ))}
+          </div>
+          <div className='filter-modal__actions'>
+            <div
+              className='filter-modal__actions-clear-filters'
+              onClick={e => resetFilter()}>
+              Clear Filter(s)
+            </div>
+          </div>
         </div>
       </div>
     </div>

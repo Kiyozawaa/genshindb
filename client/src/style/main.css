@@ -81,7 +81,7 @@ body {
   background: var(--card);
   padding: 20px;
   width: 300px;
-  height: 300px;
+  height: 400px;
   border: 1px solid var(--border);
   border-radius: 12px;
 }
@@ -107,63 +107,79 @@ body {
 }
 
 .filter-modal__item {
-  background: var(--card);
   padding: 5px;
   border: 1px solid var(--border);
   text-align: center;
 }
 
-.filter-modal__item.is-selected-rarity {
+.rarity.is-selected {
   color: #fbb244;
   border-color: #fbb244;
 }
 
 .element-pyro.is-selected {
+  background: #ef444415;
   color: #ef4444;
   border-color: #ef4444;
 }
 
 .element-hydro.is-selected {
+  background: #38bdf815;
   color: #38bdf8;
   border-color: #38bdf8;
 }
 
 .element-electro.is-selected {
+  background: #a855f715;
   color: #a855f7;
   border-color: #a855f7;
 }
 
 .element-cryo.is-selected {
+  background: #60a5fa15;
   color: #60a5fa;
   border-color: #60a5fa;
 }
 
 .element-anemo.is-selected {
+  background: #34d39915;
   color: #34d399;
-  border-color: #34d339;
+  border-color: #34d399;
 }
 
 .element-geo.is-selected {
+  background: #fbbf2415;
   color: #fbbf24;
   border-color: #fbbf24;
 }
 
 .element-dendro.is-selected {
+  background: #84cc1615;
   color: #84cc16;
   border-color: #84cc16;
 }
 
-.filter-modal__clear-filters {
-  background: transparent;
-  color: #9ca3af;
-  border: 1px solid var(--border);
-  padding: 8px;
+.weapon.is-selected {
+  border-color: #60a5fa;
+}
+
+.filter-modal__actions {
+  display: flex;
+  justify-content: flex-end;
   margin-top: 20px;
 }
 
-.filter-modal__clear-filters:hover {
-  color: var(-color);
-  border-color: #6b7280;
+.filter-modal__actions-clear-filters {
+  background: transparent;
+  color: #9ca3af;
+  border: none;
+  text-decoration: underline;
+  padding: 8px;
+}
+
+.filter-modal__actions-clear-filters:hover {
+  border: 1px solid #6b7280;
+  color: var(--color);
 }
 
 .item-list {
