@@ -1,10 +1,13 @@
 import { getWeaponList } from './../api.js';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router';
+import BackButton from './../components/BackButton.jsx';
 import NavBar from './../components/NavBar.jsx';
-
+import SearchBar from './../components/SearchBar.jsx';
 function Weapons() {
   const [weaponList, setWeaponList] = useState(null);
+  const [query, setQuery] = useState(null);
+  
   async function loadWeaponList() {
     const wepList = await getWeaponList();
     setWeaponList(wepList);
@@ -15,16 +18,30 @@ function Weapons() {
   }, []);
   
   if (!weaponList) return <div>Loading...</div>;
-  return (
-  <div className='content'>
+  
+  let result = weaponList;
+  if (query) {
+    result = result.filter(weapon => weapon.name.toLowerCase().includes(query.trim().toLowerCase()));
+  }
+  
+  const showCount = weaponList.length !== result.length;
+  return (<>
+    <BackButton to='/' value='Home'/>
+    <SearchBar type='Weapon' setQuery={setQuery}/>
+     {showCount &&
+      <div className='search__text'>
+        {result.length
+        ? `Showing ${result.length} weapon${result.length > 1 ? 's' : ''}.`
+        : 'No weapon found.'}
+      </div>
+    }
     <div className='item-list'>
-      {weaponList.map(w => (
+      {result.map(w => (
           <Item wep={w}/>
       ))}
     </div>
   <NavBar/>
-  </div>
-  )
+  </>)
 }
 
 function Item({wep}) {
