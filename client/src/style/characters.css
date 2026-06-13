@@ -24,12 +24,26 @@
 
 .character-card__icon {
   display: block;
-  background: var(--card);
   border-radius: 8px 8px 0 0;
   width: 104px;
   height: 104px;
   border: 1px solid var(--border);
   border-bottom: none;
+}
+
+.character-card__icon.rarity-5 {
+  background: linear-gradient(
+  180deg,
+  #8c6220,
+  #c98b1d);
+}
+
+.character-card__icon.rarity-4 {
+  background: linear-gradient(
+  180deg,
+  #5b4180,
+  #7c5cbf
+);
 }
 
 .character-card__element {

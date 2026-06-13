@@ -206,7 +206,7 @@ function Item({char}) {
         <img className='character-card__weapon'
         src={assetURL+weaponIcon+'.png'}/>
         <img
-        className='character-card__icon'
+        className={`character-card__icon rarity-${char.rarity}`}
         src={assetURL+char.icon+'.png'}/>
       </div>
       <div className='character-card__name'>
