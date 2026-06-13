@@ -5,7 +5,7 @@ import { getCharacter, getMaterial } from './../api.js';
 import { calcFinalStats, getAscension } from './../utils/stats/calc.js';
 import { parseDescription, parseTalent } from './../utils/parseText.js';
 import { REV_ELEMENT_MAPPING } from './../utils/mapping.js';
-import './../style/characters.css';
+import './../style/character-details.css';
 
 const assetURL = 'https://gi.yatta.moe/assets/UI/';
 
@@ -61,17 +61,17 @@ function CharacterCard({char}) {
   const elementIcon = 'UI_Buff_Element_' + REV_ELEMENT_MAPPING[char.element];
   const weaponIcon = ('UI_GachaTypeIcon_' + char.weapon).replace(/Polearm/, 'Pole');
   return (
-  <div className='character-card'>
-    <img className='character-card__avatar' src={assetURL+avatarIcon+'.png'}/>
-    <div className='character-card__name'>
-      <img className='character-card__icon' src={assetURL+elementIcon+'.png'}/>
+  <div className='character-intro'>
+    <img className='character-intro__avatar' src={assetURL+avatarIcon+'.png'}/>
+    <div className='character-intro__name'>
+      <img className='character-intro__icon' src={assetURL+elementIcon+'.png'}/>
       {char.name}
     </div>
-    <div className='character-card__rarity'>
+    <div className='character-intro__rarity'>
       {'★'.repeat(char.rarity)}
     </div>
-    <div className='character-card__weapon'>
-      <img className='character-card__icon' src={assetURL+weaponIcon+'.png'}/>
+    <div className='character-intro__weapon'>
+      <img className='character-intro__icon' src={assetURL+weaponIcon+'.png'}/>
       {char.weapon}
     </div>
   </div>

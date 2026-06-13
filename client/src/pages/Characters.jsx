@@ -4,6 +4,7 @@ import BackButton from './../components/BackButton.jsx';
 import NavBar from './../components/NavBar.jsx';
 import { getCharacterList } from './../api.js';
 import { ELEMENT_MAPPING, WEAPON_MAPPING } from './../utils/mapping.js';
+import './../style/characters.css';
 
 function Characters() {
   const [charList, setCharList] = useState(null);
@@ -41,22 +42,24 @@ function Characters() {
     result = result.filter(char => filters.weapons.includes(WEAPON_MAPPING[char.weapon]))
   }
   
+  
   if (!charList) return 'Loading...';
+  const showCount = result.length !== charList.length;
   
   return (<>
     <BackButton to={'/'} value={'Home'}/>
     
-    <SearchBar setQuery={setQuery} filters={filters} setFilters={setFilters}/>
+    <SearchBar charList={charList} setQuery={setQuery} filters={filters} setFilters={setFilters}/>
     
-    {query.length > 0 &&
+    {showCount &&
       <div className='search__text'>
-        {result.length > 0
+        {result.length
         ? `Showing ${result.length} character${result.length > 1 ? 's' : ''}.`
         : 'No character found.'}
       </div>
     }
     
-    <div className='item-list'>
+    <div className='character-list'>
       {result.map(char => (
         <Item key={char.id} char={char}/>
       ))}
@@ -64,12 +67,11 @@ function Characters() {
   </>);
 }
 
-function SearchBar({setQuery, filters, setFilters}) {
+function SearchBar({charList, setQuery, filters, setFilters}) {
   const [modal, setModal] = useState(false);
   const elements = ['Ice', 'Fire', 'Grass', 'Rock', 'Water', 'Electric', 'Wind'];
   const weapons = ['Sword', 'Polearm', 'Catalyst', 'Bow', 'Claymore']
   const totalFilters = filters.elements.length + filters.rarities.length + filters.weapons.length;
-  
   function toggleRarity(rarity) {
     setFilters(prev => ({
       ...prev,
@@ -178,11 +180,12 @@ function SearchBar({setQuery, filters, setFilters}) {
             ))}
           </div>
           <div className='filter-modal__actions'>
+            {totalFilters > 0 &&
             <div
               className='filter-modal__actions-clear-filters'
               onClick={e => resetFilter()}>
               Clear Filter(s)
-            </div>
+            </div>}
           </div>
         </div>
       </div>
@@ -191,14 +194,22 @@ function SearchBar({setQuery, filters, setFilters}) {
 }
 
 function Item({char}) {
-  const iconUrl = `https://gi.yatta.moe/assets/UI/`;
+  const assetURL = `https://gi.yatta.moe/assets/UI/`;
+  const elementIcon = 'UI_Buff_Element_' + char.element;
+  const weaponIcon = ('UI_GachaTypeIcon_' + WEAPON_MAPPING[char.weapon]).replace(/Polearm/, 'Pole');
   return (
-    <Link className='a' to={`/characters/${char.id}`}>
-    <div className='item-card'>
-      <img
-      className='icon'
-      src={iconUrl+char.icon+'.png'}/>
-      <div className='item-name'>
+    <Link className='character-card__link' to={`/characters/${char.id}`}>
+    <div className='character-card'>
+      <div className='character-card__image-container'>
+        <img className='character-card__element'
+        src={assetURL+elementIcon+'.png'}/>
+        <img className='character-card__weapon'
+        src={assetURL+weaponIcon+'.png'}/>
+        <img
+        className='character-card__icon'
+        src={assetURL+char.icon+'.png'}/>
+      </div>
+      <div className='character-card__name'>
       {char.name}</div>
         
       </div>
