@@ -31,21 +31,6 @@
   border-bottom: none;
 }
 
-.character-card__icon.rarity-5 {
-  background: linear-gradient(
-  180deg,
-  #8c6220,
-  #c98b1d);
-}
-
-.character-card__icon.rarity-4 {
-  background: linear-gradient(
-  180deg,
-  #5b4180,
-  #7c5cbf
-);
-}
-
 .character-card__element {
   width: 24px;
   height: 24px;

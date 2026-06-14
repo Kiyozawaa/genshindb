@@ -25,7 +25,8 @@ function Weapons() {
   
   if (!weaponList) return <div>Loading...</div>;
   
-  let result = weaponList;
+  let result = weaponList.sort((a, b) => b.rank - a.rank);
+  
   if (query) {
     result = result.filter(weapon => weapon.name.toLowerCase().includes(query.trim().toLowerCase()));
   }
@@ -62,17 +63,16 @@ function Weapons() {
 
 function Item({wep}) {
   if (wep.id >= 310001) return; //prevents skin from showing up
-  const iconUrl = `https://gi.yatta.moe/assets/UI/`;
+  const assetURL = `https://gi.yatta.moe/assets/UI/`;
   return (
-    <Link className='a' to={`/weapon/${wep.id}`}>
     <div className='item-card'>
-      <img
-      className='icon'
-      src={iconUrl+wep.icon+'.png'}/>
-      <div className='item-name'>
-      {wep.name}</div>
-      </div>
+      <Link className='item-card__link' to={`/weapon/${wep.id}`}>
+        <img className={`item-card__icon rarity-${wep.rank}`} src={assetURL+wep.icon+'.png'}/>
+        <div className='item-card__name'>
+          {wep.name}
+        </div>
       </Link>
+    </div>
   );
 }
 

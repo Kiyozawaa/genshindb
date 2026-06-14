@@ -187,9 +187,48 @@ body {
   color: var(--color);
 }
 
+.rarity-5 {
+  background: linear-gradient(
+  180deg,
+  #8c6220,
+  #c98b1d);
+}
+
+.rarity-4 {
+  background: linear-gradient(
+  180deg,
+  #5b4180,
+  #7c5cbf
+);
+}
+
+.rarity-3 {
+  background: linear-gradient(
+  180deg,
+  #2563eb,
+  #60a5fa
+  );
+}
+
+.rarity-2 {
+  background: linear-gradient(
+  180deg,
+  #14532d,
+  #16a34a
+  );
+}
+
+.rarity-1 {
+  background: linear-gradient(
+  180deg,
+  #4b5563,
+  #9ca3af
+  );
+}
+
 .item-list {
   display: grid;
-  grid-template-columns: repeat(4, auto);
+  grid-template-columns: repeat(4, 1fr);
   border-radius: 8px;
   justify-content: center;
 }
@@ -202,43 +241,52 @@ body {
   border-radius: 6px;
 }
 
-.item-card.small {
-  padding: 0;
-  margin: 25px;
+.item-card__link {
+  text-decoration: none;
+  color: #000;
 }
 
-.item-name {
-  background: #e3e3e3;
-  border-radius: 0 0 8px 8px;
-  padding: 5px 2px;
-  font-size: 11px;
+.item-card__image-container {
+  position: relative;
 }
 
-.item-name.small {
-  font-size: 10px;
-}
-.icon {
-  background: var(--card);
+.item-card__icon {
+  display: block;
   border-radius: 8px 8px 0 0;
   width: 104px;
   height: 104px;
   border: 1px solid var(--border);
+  border-bottom: none;
 }
 
-.icon.small {
-  width: 64px;
-  height: 64px;
+.item-card__element {
+  width: 24px;
+  height: 24px;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
-.icon.mini {
-  background: none;
-  width: 16px;
-  height: 16px;
+.item-card__weapon {
+  width: 24px;
+  height: 24px;
+  position: absolute;
+  top: 0;
+  right: 0;
 }
 
-.a {
-  text-decoration: none;
-  color: #000;
+.item-card__name {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  height: 32px;
+  background: #e3e3e3;
+  border: 1px solid var(--border);
+  border-top: none;
+  border-radius: 0 0 8px 8px;
+  padding: 5px 2px;
+  font-size: 10px;
 }
 
 
