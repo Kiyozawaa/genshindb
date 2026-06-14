@@ -7,7 +7,7 @@ export async function getAllCharacters() {
 
 export async function getCharacterList() {
   const charList = await db.all(`
-    SELECT c.id, c.name, a.uri AS icon
+    SELECT c.id, c.name, c.rarity, c.element, c.weapon, a.uri AS icon
     FROM characters c
     LEFT JOIN character_avatars a
     ON c.id = a.character_id
@@ -19,6 +19,7 @@ export async function getCharacterList() {
 export async function getCharacter(id) {
   if (!id) return;
   const details = await getCharacterDetails(id);
+  const icon = await getCharacterIcon(id);
   const baseStats = await getCharacterBaseStats(id);
   const ascension = await getCharacterAscensionStats(id);
   const statGrowth = await getCharacterStatGrowth(id);
@@ -28,6 +29,7 @@ export async function getCharacter(id) {
   const profile = await getProfile(id);
   return {
     ...details,
+    ...icon,
     baseStats,
     ascension,
     statGrowth,
@@ -56,6 +58,11 @@ async function getCharacterDetails(characterId) {
     description,
     ascension_stat
   };
+}
+
+async function getCharacterIcon(characterId) {
+  const row = await db.get('SELECT uri FROM character_avatars WHERE character_id = ?', characterId);
+  return { 'icon': row.uri };
 }
 
 async function getCharacterBaseStats(characterId) {

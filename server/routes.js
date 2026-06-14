@@ -4,6 +4,7 @@ import { dirname, join } from 'node:path';
 import { getCharacter, getCharacterList, homepage } from './../repo/characters.repo.js';
 import { getWeapon, getWeaponList } from './../repo/weapons.repo.js';
 import { getMaterial, getAllMaterials } from './../repo/materials.repo.js';
+import { getAllArtifacts, getArtifact } from './../repo/artifact.repo.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -14,7 +15,7 @@ router.get('/characters', async (req, res) => {
   res.json(charList);
 });
 
-router.get('/character/:id', async (req, res) => {
+router.get('/characters/:id', async (req, res) => {
   const { id } = req.params;
   const char = await getCharacter(id);
   res.json(char);
@@ -26,7 +27,7 @@ router.get('/weapons', async (req, res) => {
   res.json(wepList);
 });
 
-router.get('/weapon/:id', async (req, res) => {
+router.get('/weapons/:id', async (req, res) => {
   const { id } = req.params;
   const wep = await getWeapon(id);
   res.json(wep);
@@ -43,8 +44,19 @@ router.get('/materials', async (req, res) => {
   res.json(materials);
 });
 
-router.get('/material/:id', async (req, res) => {
+router.get('/materials/:id', async (req, res) => {
   const { id } = req.params;
   const material = await getMaterial(id);
   res.json(material);
+});
+
+router.get('/artifacts', async (req, res) => {
+  const artifacts = await getAllArtifacts();
+  res.json(artifacts);
+});
+
+router.get('/artifacts/:id', async (req, res) => {
+  const { id } = req.params;
+  const artifact = await getArtifact(id);
+  res.json(artifact);
 });
