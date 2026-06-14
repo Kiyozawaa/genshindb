@@ -4,9 +4,15 @@ import { Link } from 'react-router';
 import BackButton from './../components/BackButton.jsx';
 import NavBar from './../components/NavBar.jsx';
 import SearchBar from './../components/SearchBar.jsx';
+
 function Weapons() {
   const [weaponList, setWeaponList] = useState(null);
   const [query, setQuery] = useState(null);
+  const [filters, setFilters] = useState({
+    rarities: [],
+    types: [],
+    props: []
+  });
   
   async function loadWeaponList() {
     const wepList = await getWeaponList();
@@ -24,10 +30,20 @@ function Weapons() {
     result = result.filter(weapon => weapon.name.toLowerCase().includes(query.trim().toLowerCase()));
   }
   
+  if (filters.rarities.length) {
+    result = result.filter(weapon => filters.rarities.includes(weapon.rank));
+  }
+  if (filters.types.length) {
+    result = result.filter(weapon => filters.types.includes(weapon.type));
+  }
+  if (filters.props.length) {
+    result = result.filter(weapon => filters.props.includes(weapon.specialProp));
+  }
+  
   const showCount = weaponList.length !== result.length;
   return (<>
     <BackButton to='/' value='Home'/>
-    <SearchBar type='Weapon' setQuery={setQuery}/>
+    <SearchBar type='Weapon' setQuery={setQuery} filters={filters} setFilters={setFilters}/>
      {showCount &&
       <div className='search__text'>
         {result.length
@@ -36,8 +52,8 @@ function Weapons() {
       </div>
     }
     <div className='item-list'>
-      {result.map(w => (
-          <Item wep={w}/>
+      {result.map(weapon => (
+          <Item key={weapon.id} wep={weapon}/>
       ))}
     </div>
   <NavBar/>
