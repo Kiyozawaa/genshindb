@@ -10,7 +10,7 @@ function Weapons() {
   const [query, setQuery] = useState(null);
   const [filters, setFilters] = useState({
     rarities: [],
-    types: [],
+    weaponTypes: [],
     props: []
   });
   
@@ -33,8 +33,8 @@ function Weapons() {
   if (filters.rarities.length) {
     result = result.filter(weapon => filters.rarities.includes(weapon.rank));
   }
-  if (filters.types.length) {
-    result = result.filter(weapon => filters.types.includes(weapon.type));
+  if (filters.weaponTypes.length) {
+    result = result.filter(weapon => filters.weaponTypes.includes(weapon.type));
   }
   if (filters.props.length) {
     result = result.filter(weapon => filters.props.includes(weapon.specialProp));
