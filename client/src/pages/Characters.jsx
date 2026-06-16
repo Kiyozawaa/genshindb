@@ -1,5 +1,5 @@
 import { Link } from 'react-router';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import BackButton from './../components/BackButton.jsx';
 import SearchBar from './../components/SearchBar.jsx';
 import { getCharacterList } from './../api.js';
@@ -7,6 +7,7 @@ import { ELEMENT_MAPPING, WEAPON_MAPPING } from './../utils/mapping.js';
 
 function Characters() {
   const [charList, setCharList] = useState(null);
+  const [visible, setVisible] = useState(52);
   const [query, setQuery] = useState('');
   const [filters, setFilters] = useState({
     elements: [],
@@ -22,6 +23,8 @@ function Characters() {
   useEffect(() => {
     loadCharacterList();
   }, []);
+  
+  if (!charList) return 'Loading...';
   
   let result = charList?.sort((a, b) => b.rarity - a.rarity);
   
@@ -41,9 +44,9 @@ function Characters() {
     result = result.filter(char => filters.weaponTypes.includes(WEAPON_MAPPING[char.weapon]))
   }
   
-  
-  if (!charList) return 'Loading...';
+  const total = result?.length;
   const showCount = result.length !== charList.length;
+  let visibleItems = result.slice(0, visible);
   
   return (<>
     <BackButton to={'/'} value={'Home'}/>
@@ -59,10 +62,11 @@ function Characters() {
     }
     
     <div className='item-list'>
-      {result.map(char => (
+      {visibleItems.map(char => (
         <Item key={char.id} char={char}/>
       ))}
     </div>
+    <LoadMoreItems visible={visible} setVisible={setVisible} total={total}/>
   </>);
 }
 
@@ -87,6 +91,27 @@ function Item({char}) {
         
       </div>
       </Link>
+  );
+}
+
+function LoadMoreItems({visible, setVisible, total}) {
+  const ref = useRef(null);
+  useEffect(() => {
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        if (visible < total) setVisible(prev => prev + 52);
+      }
+    });
+    if (ref.current) observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, []);
+  
+  return (
+    <div ref={ref}>
+      <div className='item-list__loading' >
+        {visible < total && <>Loading more items...</>}
+      </div>
+    </div>
   );
 }
 
