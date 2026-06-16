@@ -235,6 +235,13 @@ body {
   justify-content: center;
 }
 
+.item-list__loading {
+  color: #9ca3af;
+  font-weight: 600;
+  font-size: 14px;
+  padding: 20px;
+  text-align: center;
+}
 
 .item-card {
   display: flex;
