@@ -150,19 +150,19 @@ function CharacterAscensionCost({data, level}) {
 
   return (<>
     <div className='item-section'>
-    <div className='item-list'>
-    {Object.entries(cost.costItems).map(([id, value]) => (
-    <Link key={id} className='a' to={`/material/${id}`}>
-      <div className='item-card small'>
-        <img className='icon small' src={assetURL+'UI_ItemIcon_'+id+'.png'}/>
-        <div className='item-name small'>{value}</div>
-      </div>
+      <div className='item-list'>
+      {Object.entries(cost.costItems).map(([id, value]) => (
+      <Link key={id} className='item-card__link' to={`/material/${id}`}>
+        <div className='item-card small'>
+          <img className='item-card__icon small' src={assetURL+'UI_ItemIcon_'+id+'.png'}/>
+          <div className='item-card__name'>{value}</div>
+        </div>
       </Link>
-    ))}
+      ))}
     </div>
-    <div className='center'>
+    <div className='item-section__text-center'>
       Required:
-      <img className='icon mini' src={assetURL+'UI_ItemIcon_202.png'}/>
+      <img className='item-card__icon mini' src={assetURL+'UI_ItemIcon_202.png'}/>
       {cost.coinCost}
       </div>
     </div>
