@@ -80,8 +80,8 @@ body {
 .filter-modal {
   background: var(--card);
   padding: 20px;
-  width: 400px;
-  height: 400px;
+  max-width: 400px;
+  max-height: 450px;
   border: 1px solid var(--border);
   border-radius: 12px;
 }
@@ -104,16 +104,22 @@ body {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 8px;
+  overflow-x: scroll;
 }
 
 .filter-modal__item {
   display: flex;
+  white-space: nowrap;
   justify-content: center;
   align-items: center;
   padding: 5px;
   border: 1px solid var(--border);
   text-align: center;
   font-size: 11px;
+}
+
+.filter-modal__item.is-selected {
+  border-color: #60a5fa;
 }
 
 .rarity.is-selected {
@@ -161,10 +167,6 @@ body {
   background: #84cc1615;
   color: #84cc16;
   border-color: #84cc16;
-}
-
-.weapon.is-selected {
-  border-color: #60a5fa;
 }
 
 .filter-modal__actions {

@@ -20,7 +20,8 @@ function FilterModal({type, modal, setModal, filters, setFilters, totalFilters, 
   const filterType = type.toLowerCase();
   const rarities = {
     weapon: [1, 2, 3, 4, 5],
-    character: [4, 5]
+    character: [4, 5],
+    material: [1, 2, 3, 4, 5]
   };
   const elements = ['Ice', 'Fire', 'Grass', 'Rock', 'Water', 'Electric', 'Wind'];
   const weaponTypes = ['Sword', 'Claymore', 'Polearm', 'Catalyst', 'Bow'];
@@ -33,7 +34,43 @@ function FilterModal({type, modal, setModal, filters, setFilters, totalFilters, 
     'FIGHT_PROP_HP_PERCENT': 'HP %',
     'FIGHT_PROP_DEFENSE_PERCENT': 'DEF %'
   }
-  setTotalFilters(filters.rarities?.length + (filters.elements?.length ?? 0) + (filters.weaponTypes?.length ?? 0) + (filters.props?.length ?? 0));
+  const matType = [
+    'System Access',
+    'Increases Friendship',
+    'Challenge Result Item',
+    'Special Currency',
+    'Common Currency',
+    'Superior Voucher',
+    'Common Voucher',
+    'Limited Wishing Item',
+    'Wishing Item',
+    'City States Sigil',
+    'Cooking Ingredient',
+    'Local Specialty (Mondstadt)',
+    'Local Specialty (Liyue)',
+    'Material',
+    'Quest Item',
+    'Forging Ore',
+    'Local Specialty (Inazuma)',
+    'Local Specialty (Sumeru)',
+    'Local Specialty (Fontaine)',
+    'Local Specialty (Natlan)',
+    'Local Specialty (Nod-Krai)',
+    'Character EXP Material',
+    'Weapon Enhancement Material',
+    'Character Ascension Material',
+    'Consumable',
+    'Character Talent Material',
+    'Adventure Item',
+    'Potion',
+    'Character and Weapon Enhancement Material',
+    'Character Level-Up Material',
+    'Weapon Ascension Material',
+    'Wind Glider',
+    'Gadget'
+  ];
+
+  setTotalFilters(filters.rarities?.length + (filters.elements?.length ?? 0) + (filters.weaponTypes?.length ?? 0) + (filters.props?.length ?? 0) + (filters.matType?.length ?? 0));
 
   function toggleRarity(rarity) {
     setFilters(prev => ({
@@ -65,12 +102,20 @@ function FilterModal({type, modal, setModal, filters, setFilters, totalFilters, 
     }));
   }
   
+  function toggleMatType(type) {
+    setFilters(prev => ({
+      ...prev,
+      matType: prev.matType.includes(type) ? prev.matType.filter(m => m !== type) : [...prev.matType, type]
+    }));
+  }
+  
   function resetFilter() {
     setFilters({
       rarities: [],
       elements: [],
       weaponTypes: [],
-      props: []
+      props: [],
+      matType: []
     });
   }
   
@@ -80,7 +125,7 @@ function FilterModal({type, modal, setModal, filters, setFilters, totalFilters, 
         <h2 className='filter-modal__header'>Filters</h2>
         <h3 className='filter-modal__title'>Rarity</h3>
         <div className='filter-modal__item-list'>
-          {rarities[filterType].map(rarity => (
+          {rarities[filterType]?.map(rarity => (
             <div key={rarity} className={`filter-modal__item rarity ${filters.rarities.includes(rarity) ? 'is-selected' : ''}`} onClick={e => toggleRarity(rarity)}>
               {'★'.repeat(rarity)}
             </div>
@@ -98,14 +143,16 @@ function FilterModal({type, modal, setModal, filters, setFilters, totalFilters, 
           </div>
         </>}
         
+        {filterType === 'weapon' || filterType === 'character' && <>
         <h3 className='filter-modal__title'>Type</h3>
         <div className='filter-modal__item-list'>
           {weaponTypes.map(type => (
-            <div key={type} className={`filter-modal__item weapon ${filters.weaponTypes?.includes(type) ? 'is-selected' : ''}`} onClick={e => toggleWeaponType(type)}>
+            <div key={type} className={`filter-modal__item ${filters.weaponTypes?.includes(type) ? 'is-selected' : ''}`} onClick={e => toggleWeaponType(type)}>
               {type}
             </div>
           ))}
         </div>
+        </>}
 
         {filterType === 'weapon' &&
         <>
@@ -119,6 +166,17 @@ function FilterModal({type, modal, setModal, filters, setFilters, totalFilters, 
           </div>
         </>
         }
+        
+        {filterType === 'material' && <>
+          <h3 className='filter-modal__title'>Type</h3>
+          <div className='filter-modal__item-list'>
+            {matType.map(type => (
+              <div className={`filter-modal__item ${filters.matType.includes(type) ? 'is-selected' : ''}`} onClick={e => toggleMatType(type)}>
+                {type}
+              </div>
+            ))}
+          </div>
+        </>}
         <div className='filter-modal__actions'>
           {totalFilters > 0 &&
             <div className='filter-modal__actions-clear-filters' onClick={e => resetFilter()}>

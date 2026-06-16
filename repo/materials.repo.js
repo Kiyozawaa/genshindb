@@ -1,7 +1,7 @@
 import db from './../database/db.js';
 
 export async function getAllMaterials() {
-  const rows = await db.all(`SELECT id, name, rank, icon FROM materials`);
+  const rows = await db.all(`SELECT id, name, rank, type, icon FROM materials`);
   return rows;
 }
 
