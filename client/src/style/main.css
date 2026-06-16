@@ -300,7 +300,7 @@ body {
   align-items: center;
   text-align: center;
   min-width: 0;
-  height: 24px;
+  height: 32px;
   background: #e3e3e3;
   border: 1px solid var(--border);
   border-top: none;

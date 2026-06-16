@@ -51,7 +51,7 @@ function Item({material}) {
   return (
     <Link className='item-card__link' to={`/material/${material.id}`}>
       <div className='item-card'>
-        <img className='item-card__icon' src={assetURL+material.icon+'.png'}/>
+        <img className={`item-card__icon rarity-${material.rank}`} src={assetURL+material.icon+'.png'}/>
         <div className='item-card__name'>{material.name}</div>
       </div>
     </Link>
