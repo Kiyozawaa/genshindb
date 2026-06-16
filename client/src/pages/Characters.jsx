@@ -4,7 +4,6 @@ import BackButton from './../components/BackButton.jsx';
 import SearchBar from './../components/SearchBar.jsx';
 import { getCharacterList } from './../api.js';
 import { ELEMENT_MAPPING, WEAPON_MAPPING } from './../utils/mapping.js';
-import './../style/characters.css';
 
 function Characters() {
   const [charList, setCharList] = useState(null);
@@ -24,7 +23,7 @@ function Characters() {
     loadCharacterList();
   }, []);
   
-  let result = charList ?? [];
+  let result = charList?.sort((a, b) => b.rarity - a.rarity);
   
   if (query.trim()) {
   result = result.filter(char => char.name.toLowerCase().includes(query.trim().toLowerCase()));
@@ -59,7 +58,7 @@ function Characters() {
       </div>
     }
     
-    <div className='character-list'>
+    <div className='item-list'>
       {result.map(char => (
         <Item key={char.id} char={char}/>
       ))}
@@ -72,18 +71,18 @@ function Item({char}) {
   const elementIcon = 'UI_Buff_Element_' + char.element;
   const weaponIcon = ('UI_GachaTypeIcon_' + WEAPON_MAPPING[char.weapon]).replace(/Polearm/, 'Pole');
   return (
-    <Link className='character-card__link' to={`/characters/${char.id}`}>
-    <div className='character-card'>
-      <div className='character-card__image-container'>
-        <img className='character-card__element'
+    <Link className='item-card__link' to={`/characters/${char.id}`}>
+    <div className='item-card'>
+      <div className='item-card__image-container'>
+        <img className='item-card__element'
         src={assetURL+elementIcon+'.png'}/>
-        <img className='character-card__weapon'
+        <img className='item-card__weapon'
         src={assetURL+weaponIcon+'.png'}/>
         <img
-        className={`character-card__icon rarity-${char.rarity}`}
+        className={`item-card__icon rarity-${char.rarity}`}
         src={assetURL+char.icon+'.png'}/>
       </div>
-      <div className='character-card__name'>
+      <div className='item-card__name'>
       {char.name}</div>
         
       </div>

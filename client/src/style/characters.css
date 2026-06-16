@@ -1,57 +1,69 @@
-.character-list {
-  display: grid;
-  grid-template-columns: repeat(4, auto);
-  border-radius: 8px;
-  justify-content: center;
+.skill__name {
+  display: flex;
+  align-items: center;
 }
 
-.character-card {
+.skill__icon {
+  width: 48px;
+  height: 48px;
+}
+
+.talent-slider {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  padding: 0 0 0 8px;
+}
+
+.talent-slider p {
+  text-align: right;
+}
+
+.talent-scaling {
+  display: flex;
+  justify-content: space-between;
+  gap: 2px 0;
+  padding: 3px;
+  font-size: 12px;
+}
+
+.talent-scaling__name {
+  flex: 1;
+  background: var(--bg);
+  padding: 8px;
+}
+
+.talent-scaling__value {
+  flex: 1;
+  background: var(--bg);
+  text-align: right;
+  padding: 8px;
+}
+
+.character-profile {
   display: flex;
   flex-direction: column;
-  text-align: center;
+  gap: 15px;
+}
+
+.character-profile__header {
+  font-size: 20px;
+  font-weight: 700;
+  color: #f3f4f6;
+  margin-left: 4px;
+  margin-bottom: 6px;
+}
+
+.character-profile__requirement {
+  color: #9ac3af;
+  font-size: 13px;
+  margin: 4px 2px 8px 4px;
+}
+
+.character-profile__text {
+  background: var(--card);
+  font-size: 15px;
   padding: 16px;
+  line-height: 1.7;
+  border: 1px solid var(--border);
   border-radius: 6px;
-}
-
-.character-card__link {
-  text-decoration: none;
-  color: #000;
-}
-
-.character-card__image-container {
-  position: relative;
-}
-
-.character-card__icon {
-  display: block;
-  border-radius: 8px 8px 0 0;
-  width: 104px;
-  height: 104px;
-  border: 1px solid var(--border);
-  border-bottom: none;
-}
-
-.character-card__element {
-  width: 24px;
-  height: 24px;
-  position: absolute;
-  top: 0;
-  left: 0;
-}
-
-.character-card__weapon {
-  width: 24px;
-  height: 24px;
-  position: absolute;
-  top: 0;
-  right: 0;
-}
-
-.character-card__name {
-  background: #e3e3e3;
-  border: 1px solid var(--border);
-  border-top: none;
-  border-radius: 0 0 8px 8px;
-  padding: 5px 2px;
-  font-size: 11px;
 }

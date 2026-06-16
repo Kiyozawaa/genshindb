@@ -5,7 +5,7 @@ import { getCharacter, getMaterial } from './../api.js';
 import { calcFinalStats, getAscension } from './../utils/stats/calc.js';
 import { parseDescription, parseTalent } from './../utils/parseText.js';
 import { REV_ELEMENT_MAPPING } from './../utils/mapping.js';
-import './../style/character-details.css';
+import './../style/characters.css';
 
 const assetURL = 'https://gi.yatta.moe/assets/UI/';
 
@@ -26,7 +26,7 @@ function CharacterDetails() {
   if (!charData) return <div>Loading...</div>;
   
   return (
-    <div className='content'>
+    <>
       <BackButton to='/characters' value='Characters'/>
       <CharacterCard char={charData}/>
       <CharacterNavBar active={active} setActive={setActive}/>
@@ -52,7 +52,7 @@ function CharacterDetails() {
       {active === 'Dialogues' &&
       <Quotes data={charData.quotes}/>}
 
-    </div>
+    </>
   );
 }
 
@@ -61,17 +61,17 @@ function CharacterCard({char}) {
   const elementIcon = 'UI_Buff_Element_' + REV_ELEMENT_MAPPING[char.element];
   const weaponIcon = ('UI_GachaTypeIcon_' + char.weapon).replace(/Polearm/, 'Pole');
   return (
-  <div className='character-intro'>
-    <img className='character-intro__avatar' src={assetURL+avatarIcon+'.png'}/>
-    <div className='character-intro__name'>
-      <img className='character-intro__icon' src={assetURL+elementIcon+'.png'}/>
+  <div className='item-profile'>
+    <img className='item-profile__avatar-character' src={assetURL+avatarIcon+'.png'}/>
+    <div className='item-profile__name'>
+      <img className='item-profile__icon' src={assetURL+elementIcon+'.png'}/>
       {char.name}
     </div>
-    <div className='character-intro__rarity'>
+    <div className='item-profile__rarity'>
       {'★'.repeat(char.rarity)}
     </div>
-    <div className='character-intro__weapon'>
-      <img className='character-intro__icon' src={assetURL+weaponIcon+'.png'}/>
+    <div className='item-profile__weapon'>
+      <img className='item-profile__icon' src={assetURL+weaponIcon+'.png'}/>
       {char.weapon}
     </div>
   </div>
@@ -81,11 +81,11 @@ function CharacterCard({char}) {
 function CharacterNavBar({active, setActive}) {
   const navbarItems = ['Profile', 'Talents', 'Passives', 'Constellations', 'Stories', 'Dialogues'];
   return (<>
-    <div className='character-navbar'>
+    <div className='item-navbar'>
       {navbarItems.map(item => (
       <div
       key={item}
-      className={`character-navbar__item ${active === item ? 'character-navbar__item--active' : ''}`}
+      className={`item-navbar__item ${active === item ? 'is-active' : ''}`}
       onClick={(e => setActive(item))}
       >
         {item}
@@ -100,35 +100,35 @@ function BaseStats({data, level, setLevel}) {
   const levels = [1, 10, 20, 30, 40, 50, 60, 70, 80, 90, 95, 100];
   return (
     <>
-    <div className='character-info'>
-    <div className='character__description'>{data.description}</div>
-      <div className='character-stat'>
-        <div className='character-stat__label'>HP</div>
-        <div className='character-stat__value'>{Math.round(finalStats.hp)}</div>
+    <div className='item-info'>
+      <div className='item__description'>{data.description}</div>
+      <div className='item-stat'>
+        <div className='item-stat__label'>HP</div>
+        <div className='item-stat__value'>{Math.round(finalStats.hp)}</div>
       </div>
-      <div className='character-stat'>
-        <div className='character-stat__label'>Attack</div>
-        <div className='character-stat__value'>{Math.round(finalStats.atk)}</div>
+      <div className='item-stat'>
+        <div className='item-stat__label'>Attack</div>
+        <div className='item-stat__value'>{Math.round(finalStats.atk)}</div>
       </div>
-      <div className='character-stat'>
-        <div className='character-stat__label'>Defense</div>
-        <div className='character-stat__value'>{Math.round(finalStats.def)}</div>
+      <div className='item-stat'>
+        <div className='item-stat__label'>Defense</div>
+        <div className='item-stat__value'>{Math.round(finalStats.def)}</div>
       </div>
-      <div className='character-stat'>
-        <div className='character-stat__label'>{finalStats.ascension.stat}</div>
-        <div className='character-stat__value'>{(finalStats.ascension.value).toFixed(1) ?? 0}</div>
+      <div className='item-stat'>
+        <div className='item-stat__label'>{finalStats.ascension.stat}</div>
+        <div className='item-stat__value'>{(finalStats.ascension.value).toFixed(1) ?? 0}</div>
       </div>
-      <div className='character-stat'>
-        <div className='character-stat__label'>Birthday</div>
-        <div className='character-stat__value'>{data.birth}</div>
+      <div className='item-stat'>
+        <div className='item-stat__label'>Birthday</div>
+        <div className='item-stat__value'>{data.birth}</div>
       </div>
-      <div className='character-stat'>
-        <div className='character-stat__label'>Constellation</div>
-        <div className='character-stat__value'>{data.constellation}</div>
+      <div className='item-stat'>
+        <div className='item-stat__label'>Constellation</div>
+        <div className='item-stat__value'>{data.constellation}</div>
       </div>
-      <div className='character-stat'>
-        <div className='character-stat__label'>Native</div>
-        <div className='character-stat__value'>{data.native}</div>
+      <div className='item-stat'>
+        <div className='item-stat__label'>Native</div>
+        <div className='item-stat__value'>{data.native}</div>
       </div>
     </div>
     <div className='level-slider'>
@@ -146,10 +146,10 @@ function BaseStats({data, level, setLevel}) {
 
 function CharacterAscensionCost({data, level}) {
   const cost = data[getAscension(level)] || null;
-  if (!cost.coinCost) return <div className='character-section'><center>No items needed to upgrade</center></div>
+  if (!cost.coinCost) return <div className='item-section'><center>No items needed to upgrade</center></div>
 
   return (<>
-    <div className='character-section'>
+    <div className='item-section'>
     <div className='item-list'>
     {Object.entries(cost.costItems).map(([id, value]) => (
     <Link key={id} className='a' to={`/material/${id}`}>
@@ -173,13 +173,13 @@ function  Talents({data}) {
   return (
     <>
       {data.map(t => (
-      <div className='character-section'
+      <div className='item-section'
       key={t.id}>
       <div className='skill__name'>
         <img className='skill__icon' src={assetURL+t.icon+'.png'}/>
-        <div className='character-section__title'>{t.name}</div>
+        <div className='item-section__title'>{t.name}</div>
       </div>
-      <div className='character-section__text' dangerouslySetInnerHTML={{ __html : parseDescription(t.description)}} />
+      <div className='item-section__text' dangerouslySetInnerHTML={{ __html : parseDescription(t.description)}} />
       <TalentScaling data={t.promote}/>
       </div>
       ))}
@@ -230,12 +230,12 @@ function Passives({data}) {
   return (
     <>
     {data.map(passive => (
-    <div className='character-section' key={passive.id}>
+    <div className='item-section' key={passive.id}>
       <div className='skill__name'>
       <img className='skill__icon' src={assetURL+passive.icon+'.png'}/>
-      <div className='character-section__title'>{passive.name}</div>
+      <div className='item-section__title'>{passive.name}</div>
       </div>
-      <div className='character-section__text' dangerouslySetInnerHTML={{ __html : parseDescription(passive.description)}} />
+      <div className='item-section__text' dangerouslySetInnerHTML={{ __html : parseDescription(passive.description)}} />
     </div>
     ))}
     </>
@@ -246,10 +246,10 @@ function Constellations({data}) {
   return (
     <>
       {data.map((constellation, i) => (
-      <div className='character-section'
+      <div className='item-section'
       key={constellation.id}>
-        <div className='character-section__title'>{i+1}. {constellation.name}</div>
-        <div className='character-section__text' dangerouslySetInnerHTML={{ __html: parseDescription(constellation.description)}}/>
+        <div className='item-section__title'>{i+1}. {constellation.name}</div>
+        <div className='item-section__text' dangerouslySetInnerHTML={{ __html: parseDescription(constellation.description)}}/>
       </div>
       ))}
     </>

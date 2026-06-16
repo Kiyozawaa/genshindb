@@ -25,7 +25,7 @@ function Weapons() {
   
   if (!weaponList) return <div>Loading...</div>;
   
-  let result = weaponList.sort((a, b) => b.rank - a.rank);
+  let result = weaponList?.sort((a, b) => b.rank - a.rank);
   
   if (query) {
     result = result.filter(weapon => weapon.name.toLowerCase().includes(query.trim().toLowerCase()));
@@ -57,7 +57,6 @@ function Weapons() {
           <Item key={weapon.id} wep={weapon}/>
       ))}
     </div>
-  <NavBar/>
   </>)
 }
 

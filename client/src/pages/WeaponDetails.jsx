@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
-import NavBar from './../components/NavBar.jsx';
+import BackButton from './../components/BackButton.jsx';
 import { getWeapon } from './../api.js';
 import { STAT_MAPPING } from './../utils/mapping.js';
 import { calcBaseStat, calcSecondaryStat } from './../utils/stats/calcWep.js';
@@ -9,6 +9,8 @@ import { parseDescription } from './../utils/parseText.js';
 function WeaponDetails() {
   const { id } = useParams();
   const [weapon, setWeapon] = useState(null);
+  const [active, setActive] = useState('Details');
+
   async function loadWeaponData() {
     const wepData = await getWeapon(id);
     setWeapon(wepData);
@@ -20,13 +22,44 @@ function WeaponDetails() {
   
   if (!weapon) return <div>Loading...</div>;
   
-  return (
-  <div className='content'>
-    <BasicInfo data={weapon}/>
-    <Passives data={weapon.passives}/>
-    <NavBar/>
-  </div>
-  );
+  return (<>
+    <BackButton to='/weapons' value='Weapons'/>
+    <WeaponProfile weapon={weapon}/>
+    <WeaponNavBar active={active} setActive={setActive}/>
+    {active === 'Details' && <>
+      <BasicInfo data={weapon}/>
+      <Passives data={weapon.passives}/>
+      <div className='item__description'>{weapon.description}</div>
+    </>}
+  </>);
+}
+
+function WeaponProfile({weapon}) {
+  const assetURL = 'https://gi.yatta.moe/assets/UI/';
+  const weaponIcon = ('UI_GachaTypeIcon_' + weapon.type).replace(/Polearm/, 'Pole');
+  return (<>
+    <div className='item-profile'>
+      <img className='item-profile__avatar-weapon' src={assetURL+weapon.icon+'.png'}/>
+      <div className='item-profile__name'>{weapon.name}</div>
+      <div className='item-profile__rarity'>{'★'.repeat(weapon.rank)}</div>
+      <div className='item-profile__weapon'>
+        <img className='item-profile__icon' src={assetURL + weaponIcon + '.png'}/>
+        {weapon.type}
+      </div>
+    </div>
+  </>)
+}
+
+function WeaponNavBar({active, setActive}) {
+  const items = ['Details', 'Story'];
+
+  return (<>
+    <div className='item-navbar'>
+    {items.map(item => (
+      <div key={item} className={`item-navbar__item ${active === item ? 'is-active' : ''}`} onClick={e => setActive(item)}>{item}</div>
+    ))}
+    </div>
+  </>)
 }
 
 function BasicInfo({data}) {
@@ -38,35 +71,23 @@ function BasicInfo({data}) {
   }
   return (
   <>
-    <h2 className='details-header'>Basic Info</h2>
-    <div className='weapon'>
-      <div className='weapon-stat'>
-        <div className='weapon-stat-label'>Name</div>
-        <div className='weapon-stat-value'>{data.name}</div>
-      </div>
-      <div className='weapon-stat'>
-        <div className='weapon-stat-label'>Rarity</div>
-        <div className='weapon-stat-value'>{data.rank}</div>
-      </div>
-      <div className='weapon-stat'>
-        <div className='weapon-stat-label'>Type</div>
-        <div className='weapon-stat-value'>{data.type}</div>
-      </div>
-      <div className='weapon-stat'>
-        <div className='weapon-stat-label'>Base ATK</div>
-        <div className='weapon-stat-value'>{baseStat}</div>
+    <div className='item-info'>
+      
+      <div className='item-stat'>
+        <div className='item-stat__label'>Base ATK</div>
+        <div className='item-stat__value'>{baseStat}</div>
       </div>
       
       {(data.specialProp !== 'None') &&
-      <div className='weapon-stat'>
-        <div className='weapon-stat-label'>{STAT_MAPPING[data.specialProp]}</div>
-        <div className='weapon-stat-value'>{secondaryStat}</div>
+      <div className='item-stat'>
+        <div className='item-stat__label'>{STAT_MAPPING[data.specialProp]}</div>
+        <div className='item-stat__value'>{secondaryStat}</div>
       </div>
       }
 
-      <div className='description'>{data.description}</div>
-    </div>
     <LevelSlider level={level} setLevel={setLevel} />
+    
+    </div>
   </>
   );
 }
@@ -76,16 +97,16 @@ function Passives({data}) {
   const [refinement, setRefinement] = useState(1);
   return (
     <>
-      <div className='passive'>
-        <div className='flex-box'>
-          <h3>Refinement {refinement}</h3>
+      <div className='item-section'>
+        <h2 className='item-section__title big'>Passive</h2>
+        <div className='item-section__grid'>
           {[1, 2, 3, 4, 5].map(n => (
           <div key={n}
-          className={`box ${refinement === n ? 'active' : ''}`}
+          className={`item-section__grid-box ${refinement === n ? 'is-active' : ''}`}
           onClick={() => setRefinement(n)}>{n}</div>
           ))}
         </div>
-        <p dangerouslySetInnerHTML={{ __html: parseDescription(data[refinement - 1].description)}}/>
+        <p className='item-section__text' dangerouslySetInnerHTML={{ __html: parseDescription(data[refinement - 1].description)}}/>
       </div>
     </>
   )
