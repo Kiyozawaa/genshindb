@@ -1,5 +1,5 @@
 import { getWeaponList } from './../api.js';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router';
 import BackButton from './../components/BackButton.jsx';
 import NavBar from './../components/NavBar.jsx';
@@ -8,6 +8,7 @@ import SearchBar from './../components/SearchBar.jsx';
 function Weapons() {
   const [weaponList, setWeaponList] = useState(null);
   const [query, setQuery] = useState(null);
+  const [visible, setVisible] = useState(52);
   const [filters, setFilters] = useState({
     rarities: [],
     weaponTypes: [],
@@ -42,6 +43,9 @@ function Weapons() {
   }
   
   const showCount = weaponList.length !== result.length;
+  const total = result?.length;
+  let visibleItems = result.slice(0, visible);
+  
   return (<>
     <BackButton to='/' value='Home'/>
     <SearchBar type='Weapon' setQuery={setQuery} filters={filters} setFilters={setFilters}/>
@@ -53,10 +57,11 @@ function Weapons() {
       </div>
     }
     <div className='item-list'>
-      {result.map(weapon => (
+      {visibleItems.map(weapon => (
           <Item key={weapon.id} wep={weapon}/>
       ))}
     </div>
+    <LoadMoreItems visible={visible} setVisible={setVisible} total={total}/>
   </>)
 }
 
@@ -73,6 +78,26 @@ function Item({wep}) {
       </Link>
     </div>
   );
+}
+
+function LoadMoreItems({visible, setVisible, total}) {
+  const ref = useRef(null);
+  
+  useEffect(() => {
+    const observer = new IntersectionObserver(([entry]) => {
+        if (entry.isIntersecting) {
+          if (visible < total) setVisible(prev => prev + 52);
+        }
+      });
+    if (ref.current) observer.observe(ref.current);
+    return () => observer.disconnect();
+    }, []);
+    
+  return(<>
+    <div ref={ref}>
+      <div className='item-list__loading'>{visible < total && 'Loading more items...'}</div>
+    </div>
+  </>)
 }
 
 export default Weapons;
