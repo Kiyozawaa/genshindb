@@ -21,7 +21,8 @@ function FilterModal({type, modal, setModal, filters, setFilters, totalFilters, 
   const rarities = {
     weapon: [1, 2, 3, 4, 5],
     character: [4, 5],
-    material: [1, 2, 3, 4, 5]
+    material: [1, 2, 3, 4, 5],
+    artifact: [4, 5]
   };
   const elements = ['Ice', 'Fire', 'Grass', 'Rock', 'Water', 'Electric', 'Wind'];
   const weaponTypes = ['Sword', 'Claymore', 'Polearm', 'Catalyst', 'Bow'];
