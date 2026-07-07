@@ -1,6 +1,5 @@
 .env
 node_modules/
-*.db
 temp/
 .seeded
 genshin.db-journal

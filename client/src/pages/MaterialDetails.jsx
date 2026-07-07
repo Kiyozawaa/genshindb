@@ -2,7 +2,9 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import { getMaterial } from './../api.js';
 import { Link } from 'react-router';
+import BackButton from './../components/BackButton.jsx';
 import { parseDescription } from './../utils/parseText.js';
+
 export default function MaterialDetails() {
   const [mat, setMat] = useState(null);
   const { id } = useParams();
@@ -17,27 +19,25 @@ export default function MaterialDetails() {
   if (!mat) return <div>Loading...</div>
   
   return (<>
-    <div className='content'>
-      <div className='details-header'>Basic Info</div>
-      <div className='material'>
-        <div className='material-stat'>
-          <div className='material-stat-label'>Name</div>
-          <div className='material-stat-value'>{mat.name}</div>
-        </div>
-        <div className='material-stat'>
-          <div className='material-stat-label'>Rarity</div>
-          <div className='material-stat-value'>{mat.rank}</div>
-        </div>
-        <div className='material-stat'>
-          <div className='material-stat-label'>Type</div>
-          <div className='material-stat-value'>{mat.type}</div>
-        </div>
-      </div>
-      <div className='description' dangerouslySetInnerHTML={{ __html: parseDescription(mat.description)}}/>
+      <BackButton to='/materials' value='Materials'/>
+      <MaterialProfile material={mat}/>
+      <div className='item__description' dangerouslySetInnerHTML={{ __html: parseDescription(mat.description)}}/>
       <Source data={mat.source}/>
       <RequiredBy data={mat.additions.requiredBy}/>
-    </div>
   </>);
+}
+
+function MaterialProfile({material}) {
+  const assetURL = 'https://gi.yatta.moe/assets/UI/';
+  
+  return (<>
+    <div className='item-profile'>
+      <img className='item-profile__avatar-weapon' src={assetURL+material.icon+'.png'}/>
+      <div className='item-profile__name'>{material.name}</div>
+      <div className='item-profile__type'>{material.type}</div>
+      <div className='item-profile__rarity'>{'*'.repeat(material.rank)}</div>
+    </div>
+  </>)
 }
 
 function Source({data}) {
